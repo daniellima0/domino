@@ -22,6 +22,7 @@ int main(){
         pecas[i].direita = 0;
     }
 
+    //Ainda falta criar corretamente todas as pecas
     srand(time(NULL));
     for(i=0;i<28;i++){
         num1 = rand() % 6;
@@ -29,20 +30,20 @@ int main(){
         pecas[i].esquerda = num1;
         pecas[i].direita = num2;
     }
-    
     for(i=0;i<28;i++){
-        printf("|%d|",pecas[i].esquerda );
+        printf("|%d|", pecas[i].esquerda);
         printf("%d|", pecas[i].direita);        
     }
-    printf("\n");
+/*
+    Criando o cava
+    Não ta rolando... tp_peca ainda não é compativel com a pilha
+
+    tp_pilha monte;
+    inicializa_pilha(&monte);
+    for(i=0;i<28;i++){
+        push(&monte, pecas[i]);
+    }
+*/
 
 return 0;
 }
-
-/*
-    //Para dois jogadores
-    printf("Nome do Jogador 1: ");
-    scanf(" %[\n]s", nome_jogador1);
-    printf("Nome do Jogador 2: ");
-    scanf(" %[\n]s", nome_jogador2);
-*/

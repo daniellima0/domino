@@ -32,4 +32,10 @@
     tp_pilha monte;
     inicializa_pilha(&monte);
     
-    
+    /*
+    //Para dois jogadores
+    printf("Nome do Jogador 1: ");
+    scanf(" %[\n]s", nome_jogador1);
+    printf("Nome do Jogador 2: ");
+    scanf(" %[\n]s", nome_jogador2);
+*/

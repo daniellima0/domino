@@ -1,7 +1,7 @@
 #include <stdio.h>
 #define MAX 100
 
-typedef int 
+typedef tp_peca 
     tp_item;
 
 typedef struct{
@@ -48,7 +48,8 @@ void imprime_pilha(tp_pilha p){
     printf("Pilha:\n");
     while (!pilha_vazia(&p)){
         pop(&p,&e);
-        printf("%d ",e);
+        printf("|%d|", e.esquerda);
+        printf("%d|", e.direita);
     }
 }
 
@@ -60,7 +61,7 @@ int altura_pilha(tp_pilha *p){
 Implementar uma função que receba uma pilha 
 como parâmetro e retire todos os
 elementos ímpares dessa pilha.
-*/
+
 int retira_impares(tp_pilha *p){
     if (pilha_vazia(p)) return 0;
     tp_pilha paux;
@@ -78,11 +79,11 @@ int retira_impares(tp_pilha *p){
     return 1;
 }
 
-/*
+
 Implementar uma função que receba duas pilhas 
 como parâmetro e retorna 1 caso sejam
 idênticas ou zero caso contrário.
-*/
+
 int pilhas_iguais (tp_pilha p1, tp_pilha p2){
     if (altura_pilha(&p1) != altura_pilha(&p2)) return 0;
     tp_item e1, e2;
@@ -107,3 +108,4 @@ void empilhar(tp_pilha *p1, tp_pilha *p2){
         push(p1, e);
     }
 }
+*/

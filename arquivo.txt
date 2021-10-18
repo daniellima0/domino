@@ -1,5 +1,4 @@
     //Criando as peças.
-    tp_peca pecas[28];
     pecas[0].esquerda=0;pecas[0].direita=0;
     pecas[1].esquerda=0;pecas[1].direita=1;
     pecas[2].esquerda=1;pecas[2].direita=1;

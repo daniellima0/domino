@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "globais.h": "c",
+        "int_fila.h": "c",
+        "int_pilha.h": "c"
+    }
+}

@@ -30,12 +30,6 @@ void embaralhar(tp_peca *monte){
         if(num==0) push (&p1, e);if(num==1) push (&p2, e);if(num==2) push (&p3, e);
         if(num==3) push (&p4, e);if(num==4) push (&p5, e);
     }
-    printf("\n\n");
-    imprime_pilha(p1);printf("\n");
-    imprime_pilha(p2);printf("\n");
-    imprime_pilha(p3);printf("\n");
-    imprime_pilha(p4);printf("\n");
-    imprime_pilha(p5);printf("\n");
     while(!pilha_vazia(&p3)) {pop(&p3, &e); push(monte, e);}
     while(!pilha_vazia(&p2)) {pop(&p2, &e); push(monte, e);}
     while(!pilha_vazia(&p1)) {pop(&p1, &e); push(monte, e);}
@@ -44,16 +38,25 @@ void embaralhar(tp_peca *monte){
 }
 
 int main(){
+    system("cls");
     int i, j;
     int escolha;
+
+    //regras(); Função pendente
 
     //Escolha do modo de jogo
     menu(&escolha);
     if(escolha == 2){
         printf("Voce escolheu jogar com dois jogadores.\n");
+        printf("\nDigite o nome do primeiro jogador: "); scanf(" %[^\n]s", &nome_jogador1);
+        printf("Digite o nome do segundo jogador: "); scanf(" %[^\n]s", &nome_jogador2);
     }
     if(escolha == 4){
         printf("Voce escolheu jogar com quatro jogadores.\n");
+        printf("\nDigite o nome do primeiro jogador: "); scanf(" %[^\n]s", &nome_jogador1);
+        printf("Digite o nome do segundo jogador: "); scanf(" %[^\n]s", &nome_jogador2);
+        printf("Digite o nome do terceiro jogador: "); scanf(" %[^\n]s", &nome_jogador3);
+        printf("Digite o nome do quarto jogador: "); scanf(" %[^\n]s", &nome_jogador4);
     }    
     if(escolha == 0){
         printf("Voce escolheu sair.\nTchau, ate a proxima!");
@@ -78,22 +81,43 @@ int main(){
         push(&monte, pecas[i]);
     }
 	
-    imprime_pilha(monte);
-    printf("\n");
+//    imprime_pilha(monte);
+//    printf("\n");
+
+    //Embaralha o monte
     embaralhar(&monte);
     imprime_pilha(monte);
 
+    //Distribuindo as pecas para cada jogador
+    //talvez o jogo ocorra todo dentro desses dois ifs.
+    tp_peca e;
+    if(escolha==2){
+        tp_pilha mao_j1, mao_j2;
+        inicializa_pilha(&mao_j1); inicializa_pilha(&mao_j2); 
+        for(i=0;i<7;i++) {pop(&monte, &e); push(&mao_j1, e);}
+        for(i=0;i<7;i++) {pop(&monte, &e); push(&mao_j2, e);}
+    
+        //Criar função para ordenar pelo somatório dos números das peças.
+        //ordenar_pecas();
+
+    }
+    else{
+        if(escolha == 4){
+        tp_pilha mao_j1, mao_j2, mao_j3, mao_j4;
+        inicializa_pilha(&mao_j1); inicializa_pilha(&mao_j2);
+        inicializa_pilha(&mao_j3); inicializa_pilha(&mao_j4); 
+        for(i=0;i<7;i++) {pop(&monte, &e); push(&mao_j1, e);}
+        for(i=0;i<7;i++) {pop(&monte, &e); push(&mao_j2, e);}
+        for(i=0;i<7;i++) {pop(&monte, &e); push(&mao_j3, e);}
+        for(i=0;i<7;i++) {pop(&monte, &e); push(&mao_j4, e);} 
+
+        //Criar função para ordenar pelo somatório dos números das peças.
+        //ordenar_pecas();  
+
+        }
+    }
+
+    
+
 return 0;
 }
-
-/*
-    //Imprimindo as pecas atraves da pilha
-	
-    imprime_pilha(monte);
-    printf("\n\n");
-    imprime_pilha(p1);printf("\n");
-    imprime_pilha(p2);printf("\n");
-    imprime_pilha(p3);printf("\n");
-    imprime_pilha(p4);printf("\n");
-    imprime_pilha(p5);printf("\n");
-*/

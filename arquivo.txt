@@ -56,3 +56,9 @@
         printf("|%d|", pecas[i].esquerda);
         printf("%d|", pecas[i].direita);        
     }
+
+    //Imprimindo as pecas
+    for(i=0;i<28;i++){
+        printf("|%d|", pecas[i].esquerda);
+        printf("%d|", pecas[i].direita);        
+    }

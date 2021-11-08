@@ -1,41 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 void menu();
 void menu_jogar();
 void menu_regras();
 void menu_sobre_nos();
 int sair();
 
-void tela_inicial(){
-int opcao;
+void tela_inicial() {
+    int opcao;
     menu();
     scanf("%d", &opcao);
-switch (opcao){
-    case 1:
-        menu_jogar();
-        scanf("%d", &opcao);
-        break;
-    case 2: 
-        menu_regras();
-        scanf("%d", &opcao);
-        break;
-    case 3:
-        menu_sobre_nos();
-        scanf("%d", &opcao);
-        
-        break;
-    case 4:
-        sair();
-        break;
+    switch (opcao) {
+        case 1:
+            menu_jogar();
+            scanf("%d", &opcao);
+            break;
+        case 2:
+            menu_regras();
+            scanf("%d", &opcao);
+            break;
+        case 3:
+            menu_sobre_nos();
+            scanf("%d", &opcao);
 
-    default:
-        break;
+            break;
+        case 4:
+            sair();
+            break;
+
+        default:
+            break;
     }
 }
 
-void menu(){
+void menu() {
     system("cls");
     printf("\n");
     printf("*************************\n");
@@ -49,7 +48,7 @@ void menu(){
     printf("*************************\n");
 }
 
-void menu_jogar(){
+void menu_jogar() {
     system("cls");
     printf("\n");
     printf("*************************\n");
@@ -62,7 +61,7 @@ void menu_jogar(){
     printf("*************************\n");
 }
 
-void menu_regras(){
+void menu_regras() {
     printf("*************************\n");
     printf("*        REGRAS         *\n");
     printf("*                       *\n");
@@ -70,7 +69,7 @@ void menu_regras(){
     printf("*************************\n");
 }
 
-void menu_sobre_nos(){
+void menu_sobre_nos() {
     printf("*************************\n");
     printf("*       SOBRE NOS       *\n");
     printf("*                       *\n");
@@ -78,7 +77,7 @@ void menu_sobre_nos(){
     printf("*************************\n");
 }
 
-int sair(){
+int sair() {
     printf("\nFim de Jogo.\n");
     return 0;
 }

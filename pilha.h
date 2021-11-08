@@ -1,64 +1,64 @@
 #include <stdio.h>
 #define MAX 100
 
-typedef tp_peca 
+typedef tp_peca
     tp_item;
 
-typedef struct{
-    int topo;           //inicialmente topo = -1
+typedef struct {
+    int topo;  // inicialmente topo = -1
     tp_item item[MAX];
-}tp_pilha;
+} tp_pilha;
 
-void inicializa_pilha(tp_pilha *p){
+void inicializa_pilha(tp_pilha *p) {
     p->topo = -1;
 }
 
-int pilha_vazia(tp_pilha *p){       //Pilha vc está vazia? 
-    if (p->topo == -1) return 1;    //Sim, estou!
-    return 0;                       //Não estou.
+int pilha_vazia(tp_pilha *p) {    // Pilha vc está vazia?
+    if (p->topo == -1) return 1;  // Sim, estou!
+    return 0;                     // Não estou.
 }
 
-int pilha_cheia(tp_pilha *p){           //Pilha vc está cheia?
-    if (p->topo == MAX -1) return 1;    //Sim, estou :/
-    return 0;                           //Não estou :)
+int pilha_cheia(tp_pilha *p) {         // Pilha vc está cheia?
+    if (p->topo == MAX - 1) return 1;  // Sim, estou :/
+    return 0;                          // Não estou :)
 }
 
-int push (tp_pilha *p, tp_item e){      //push = EMPILHAR 
-    if (pilha_cheia(p)) return 0;       //verificar se esta cheia
-    p->topo++;                          //incrementa 1 ao topo
-    p->item[p->topo]=e;                 //colocar o "e" no topo da pilha
+int push(tp_pilha *p, tp_item e) {  // push = EMPILHAR
+    if (pilha_cheia(p)) return 0;   // verificar se esta cheia
+    p->topo++;                      // incrementa 1 ao topo
+    p->item[p->topo] = e;           // colocar o "e" no topo da pilha
     return 1;
 }
 
-int pop(tp_pilha *p, tp_item *e){        //pop = DESEMPILHAR; retorna para a main o "e".
-    if (pilha_vazia(p)) return 0;        //Verifica se esta cheia
-    *e=p->item[p->topo];                 //Coloca em "e" o item no topo
-    p->topo--;                           //Decresce 1 do valor do topo
+int pop(tp_pilha *p, tp_item *e) {  // pop = DESEMPILHAR; retorna para a main o "e".
+    if (pilha_vazia(p)) return 0;   // Verifica se esta cheia
+    *e = p->item[p->topo];          // Coloca em "e" o item no topo
+    p->topo--;                      // Decresce 1 do valor do topo
     return 1;
 }
 
-int top(tp_pilha *p, tp_item *e){       //top: mostra quem ta no topo sem desempilhar
+int top(tp_pilha *p, tp_item *e) {  // top: mostra quem ta no topo sem desempilhar
     if (pilha_vazia(p)) return 0;
-    *e=p->item[p->topo];
-    return 1;   
+    *e = p->item[p->topo];
+    return 1;
 }
 
-void imprime_pilha(tp_pilha p){         
+void imprime_pilha(tp_pilha p) {
     tp_item e;
     printf("Pilha:\n");
-    while (!pilha_vazia(&p)){
-        pop(&p,&e);
+    while (!pilha_vazia(&p)) {
+        pop(&p, &e);
         printf("|%d|", e.esquerda);
         printf("%d|", e.direita);
     }
 }
 
-int altura_pilha(tp_pilha *p){
-    return p->topo+1;
+int altura_pilha(tp_pilha *p) {
+    return p->topo + 1;
 }
 
 /*
-Implementar uma função que receba uma pilha 
+Implementar uma função que receba uma pilha
 como parâmetro e retire todos os
 elementos ímpares dessa pilha.
 
@@ -80,7 +80,7 @@ int retira_impares(tp_pilha *p){
 }
 
 
-Implementar uma função que receba duas pilhas 
+Implementar uma função que receba duas pilhas
 como parâmetro e retorna 1 caso sejam
 idênticas ou zero caso contrário.
 
@@ -92,7 +92,7 @@ int pilhas_iguais (tp_pilha p1, tp_pilha p2){
         pop(&p2, &e2);
         if (e1 != e2) return 0;
     }
-    return 1;  
+    return 1;
 }
 
 void empilhar(tp_pilha *p1, tp_pilha *p2){

@@ -64,6 +64,58 @@ void embaralhar(tp_peca *monte) {
     }
 }
 
+// ordenas peças de uma pilha de acordo com o somatório delas de forma crescente
+void ordenar_pecas(tp_pilha *pecas) {
+    int referencia = 0, somatorio = 0;
+    tp_item e1, e2;
+    tp_pilha pilha_ordenada, pilha_auxiliar;
+
+    inicializa_pilha(&pilha_ordenada);
+    inicializa_pilha(&pilha_auxiliar);
+
+    while (!pilha_vazia(pecas)) {
+        pop(pecas, &e1);
+        somatorio = e1.esquerda + e1.direita;
+
+        if (somatorio > referencia && pilha_vazia(&pilha_ordenada)) {
+            push(&pilha_ordenada, e1);
+            referencia = somatorio;
+        } else if (somatorio > referencia && !pilha_vazia(&pilha_ordenada)) {
+            while (1 && !pilha_vazia(&pilha_ordenada)) {
+                pop(&pilha_ordenada, &e2);
+
+                if (referencia != (e2.esquerda + e2.direita)) {
+                    push(&pilha_ordenada, e2);
+                    break;
+                }
+
+                push(&pilha_auxiliar, e2);
+            }
+            push(&pilha_ordenada, e1);
+            referencia = somatorio;
+        } else if (somatorio == referencia) {
+            push(&pilha_ordenada, e1);
+        } else if (somatorio < referencia) {
+            push(&pilha_auxiliar, e1);
+        }
+    }
+
+    imprime_pilha(pilha_ordenada);
+
+    // while (altura_pilha(&pilha_ordenada) < 6) {
+
+    //     //colocar codigo de encontrar a maior peça da pilha aqui
+
+    //     if (altura_pilha(&pilha_ordenada) % 2 == 0) {
+    //         pilha_emissora = pecas;             // pilha_emissora tem que ser um ponteiro
+    //         pilha_receptora = &pilha_auxiliar;  // pilha_receptora também deve ser um ponteiro
+    //     } else if (altura_pilha(&pilha_ordenada) % 2 != 0) {
+    //         pilha_emissora = &pilha_auxiliar;
+    //         pilha_receptora = pecas;
+    //     }
+    // }
+}
+
 int main() {
     system("cls");
     int i, j;
@@ -121,7 +173,6 @@ int main() {
 
     // Embaralhando o monte
     embaralhar(&monte);
-    imprime_pilha(monte);
 
     // Distribuindo as pecas para cada jogador
     // talvez o jogo ocorra todo dentro desses dois ifs.
@@ -141,8 +192,13 @@ int main() {
             push(&mao_j2, e);
         }
 
+        imprime_pilha(mao_j1);
+        printf("\n");
+        imprime_pilha(mao_j2);
+
         // Criar função para ordenar pelo somatório dos números das peças.
-        // ordenar_pecas();
+        ordenar_pecas(&mao_j1);
+        ordenar_pecas(&mao_j2);
 
     } else {
         if (escolha == 4) {

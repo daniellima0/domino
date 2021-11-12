@@ -64,56 +64,87 @@ void embaralhar(tp_peca *monte) {
     }
 }
 
+// transfere items de uma pilha à outra no mesmo sentido (1) ou no sentido inverso (2)
+void transferir_entre_pilhas(tp_pilha *pilha_emissora, tp_pilha *pilha_receptora, int tipo) {
+    if (pilha_vazia(pilha_emissora) || pilha_cheia(pilha_receptora)) return 0;
+
+    tp_item e;
+    tp_pilha pilha_auxiliar;
+    inicializa_pilha(&pilha_auxiliar);
+
+    if (tipo == 1) {
+        while (!pilha_vazia(pilha_emissora)) {
+            pop(pilha_emissora, &e);
+            push(&pilha_auxiliar, e);
+        }
+        while (!pilha_vazia(&pilha_auxiliar)) {
+            pop(&pilha_auxiliar, &e);
+            push(pilha_receptora, e);
+        }
+    } else if (tipo == 2) {
+        while (!pilha_vazia(pilha_emissora)) {
+            pop(pilha_emissora, &e);
+            push(pilha_receptora, e);
+        }
+    }
+}
+
 // ordenas peças de uma pilha de acordo com o somatório delas de forma crescente
-void ordenar_pecas(tp_pilha *pecas) {
-    int referencia = 0, somatorio = 0;
+void ordenar_pecas(tp_pilha *pilha_original) {
+    int referencia = 0, somatorio = 0, contador = 0;
     tp_item e1, e2;
     tp_pilha pilha_ordenada, pilha_auxiliar;
 
     inicializa_pilha(&pilha_ordenada);
     inicializa_pilha(&pilha_auxiliar);
 
-    while (!pilha_vazia(pecas)) {
-        pop(pecas, &e1);
-        somatorio = e1.esquerda + e1.direita;
+    tp_pilha *pilha_emissora, *pilha_receptora;
 
-        if (somatorio > referencia && pilha_vazia(&pilha_ordenada)) {
-            push(&pilha_ordenada, e1);
-            referencia = somatorio;
-        } else if (somatorio > referencia && !pilha_vazia(&pilha_ordenada)) {
-            while (1 && !pilha_vazia(&pilha_ordenada)) {
-                pop(&pilha_ordenada, &e2);
-
-                if (referencia != (e2.esquerda + e2.direita)) {
-                    push(&pilha_ordenada, e2);
-                    break;
-                }
-
-                push(&pilha_auxiliar, e2);
-            }
-            push(&pilha_ordenada, e1);
-            referencia = somatorio;
-        } else if (somatorio == referencia) {
-            push(&pilha_ordenada, e1);
-        } else if (somatorio < referencia) {
-            push(&pilha_auxiliar, e1);
+    while (altura_pilha(&pilha_ordenada) < 7) {
+        if (contador % 2 == 0) {
+            pilha_emissora = pilha_original;
+            pilha_receptora = &pilha_auxiliar;
+        } else if (contador % 2 != 0) {
+            pilha_emissora = &pilha_auxiliar;
+            pilha_receptora = pilha_original;
         }
+
+        referencia = 0;
+        somatorio = 0;
+
+        while (!pilha_vazia(pilha_emissora)) {
+            pop(pilha_emissora, &e1);
+            somatorio = e1.esquerda + e1.direita;
+
+            if (somatorio > referencia && pilha_vazia(&pilha_ordenada)) {
+                push(&pilha_ordenada, e1);
+                referencia = somatorio;
+            } else if (somatorio > referencia && !pilha_vazia(&pilha_ordenada)) {
+                while (1 && !pilha_vazia(&pilha_ordenada)) {
+                    pop(&pilha_ordenada, &e2);
+
+                    if (referencia != (e2.esquerda + e2.direita)) {
+                        push(&pilha_ordenada, e2);
+                        break;
+                    }
+
+                    push(pilha_receptora, e2);
+                }
+                push(&pilha_ordenada, e1);
+                referencia = somatorio;
+            } else if (somatorio == referencia) {
+                push(&pilha_ordenada, e1);
+            } else if (somatorio < referencia) {
+                push(pilha_receptora, e1);
+            }
+        }
+
+        contador++;
     }
 
-    imprime_pilha(pilha_ordenada);
+    transferir_entre_pilhas(&pilha_ordenada, pilha_original, 1);
 
-    // while (altura_pilha(&pilha_ordenada) < 6) {
-
-    //     //colocar codigo de encontrar a maior peça da pilha aqui
-
-    //     if (altura_pilha(&pilha_ordenada) % 2 == 0) {
-    //         pilha_emissora = pecas;             // pilha_emissora tem que ser um ponteiro
-    //         pilha_receptora = &pilha_auxiliar;  // pilha_receptora também deve ser um ponteiro
-    //     } else if (altura_pilha(&pilha_ordenada) % 2 != 0) {
-    //         pilha_emissora = &pilha_auxiliar;
-    //         pilha_receptora = pecas;
-    //     }
-    // }
+    imprime_pilha(*pilha_original);
 }
 
 int main() {
@@ -196,7 +227,6 @@ int main() {
         printf("\n");
         imprime_pilha(mao_j2);
 
-        // Criar função para ordenar pelo somatório dos números das peças.
         ordenar_pecas(&mao_j1);
         ordenar_pecas(&mao_j2);
 
@@ -228,8 +258,10 @@ int main() {
                 push(&mao_j4, e);
             }
 
-            // Criar função para ordenar pelo somatório dos números das peças.
-            // ordenar_pecas();
+            ordenar_pecas(&mao_j1);
+            ordenar_pecas(&mao_j2);
+            ordenar_pecas(&mao_j3);
+            ordenar_pecas(&mao_j4);
         }
     }
 

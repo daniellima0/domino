@@ -1,9 +1,8 @@
-#ifndef LISTADE_H
-#define LISTADE_H
+#ifndef LISTADE_PECA_H
+#define LISTADE_PECA_H
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef char tp_item;
+#include "tp_item.h"
 
 typedef struct tp_no_aux {
     struct tp_no_aux *ant;
@@ -62,14 +61,14 @@ void imprime_listad(tp_listad *lista, int ordem) {
         case 1:
             atu = lista->ini;
             while (atu != NULL) {
-                printf("%c\n", atu->info);
+                printf("|%d|%d| ", atu->info.esquerda, atu->info.direita);  
                 atu = atu->prox;
             }
             break;
         case 2:
             atu = lista->fim;
             while (atu != NULL) {
-                printf("%c\n", atu->info);
+                printf("|%d|%d| ", atu->info.esquerda, atu->info.direita);
                 atu = atu->ant;
             }
             break;
@@ -82,7 +81,7 @@ void imprime_listad(tp_listad *lista, int ordem) {
 int remove_listad(tp_listad *lista, tp_item e) {
     tp_no *atu = lista->ini;
 
-    while ((atu != NULL) && (atu->info != e)) {
+    while ((atu != NULL) && ((atu->info.esquerda != e.esquerda) || (atu->info.direita != e.direita))) {
         atu = atu->prox;
     }
 
@@ -111,7 +110,7 @@ int remove_listad(tp_listad *lista, tp_item e) {
 tp_no *busca_listad(tp_listad *lista, tp_item e) {
     tp_no *atu;
     atu = lista->ini;
-    while ((atu != NULL) && (atu->info != e)) {
+    while ((atu != NULL) && ((atu->info.esquerda != e.esquerda) || (atu->info.direita != e.direita))) {
         atu = atu->prox;
     }
     return atu;

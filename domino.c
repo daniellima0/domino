@@ -174,69 +174,90 @@ int main() {
     escolher_modo(&escolha);
 
     if (escolha == 2) {
-        printf("Voce escolheu jogar com dois jogadores.\n");
+        do {
+            printf("Voce escolheu jogar com dois jogadores.\n");
 
-        printf("\nDigite o nome do primeiro jogador: ");
-        scanf(" %[^\n]s", &nome_jogador1);
-
-        while ((!is_string(nome_jogador1))) {
-            system("cls");
-            printf("Utilize apenas caracteres. Tente novamente. ");
             printf("\nDigite o nome do primeiro jogador: ");
             scanf(" %[^\n]s", &nome_jogador1);
-        }
 
-        printf("\nDigite o nome do segundo jogador: ");
-        scanf(" %[^\n]s", &nome_jogador2);
+            while ((!is_string(nome_jogador1))) {
+                system("cls");
+                printf("Utilize apenas caracteres. Tente novamente. ");
+                printf("\nDigite o nome do primeiro jogador: ");
+                scanf(" %[^\n]s", &nome_jogador1);
+            }
 
-        while ((!is_string(nome_jogador2))) {
-            system("cls");
-            printf("Utilize apenas caracteres. Tente novamente. ");
             printf("\nDigite o nome do segundo jogador: ");
             scanf(" %[^\n]s", &nome_jogador2);
-        }
+
+            while ((!is_string(nome_jogador2))) {
+                system("cls");
+                printf("Utilize apenas caracteres. Tente novamente. ");
+                printf("\nDigite o nome do segundo jogador: ");
+                scanf(" %[^\n]s", &nome_jogador2);
+            }
+
+            if (!strcmp(nome_jogador1, nome_jogador2)) {
+                system("cls");
+                printf("Utilize nomes diferentes. Tente novamente.\n");
+            }
+
+        } while (!strcmp(nome_jogador1, nome_jogador2));
 
     } else if (escolha == 4) {
-        printf("Voce escolheu jogar com quatro jogadores.\n");
-        printf("\nDigite o nome do primeiro jogador: ");
-        scanf(" %[^\n]s", &nome_jogador1);
-
-        while ((!is_string(nome_jogador1))) {
-            system("cls");
-            printf("Utilize apenas caracteres. Tente novamente. ");
+        do {
+            printf("Voce escolheu jogar com quatro jogadores.\n");
             printf("\nDigite o nome do primeiro jogador: ");
             scanf(" %[^\n]s", &nome_jogador1);
-        }
 
-        printf("Digite o nome do segundo jogador: ");
-        scanf(" %[^\n]s", &nome_jogador2);
+            while ((!is_string(nome_jogador1))) {
+                system("cls");
+                printf("Utilize apenas caracteres. Tente novamente. ");
+                printf("\nDigite o nome do primeiro jogador: ");
+                scanf(" %[^\n]s", &nome_jogador1);
+            }
 
-        while ((!is_string(nome_jogador2))) {
-            system("cls");
-            printf("Utilize apenas caracteres. Tente novamente. ");
-            printf("\nDigite o nome do segundo jogador: ");
+            if (!strcmp(nome_jogador1, nome_jogador2)) {
+                system("cls");
+                printf("Utilize nomes diferentes. Tente novamente.\n");
+            }
+
+            printf("Digite o nome do segundo jogador: ");
             scanf(" %[^\n]s", &nome_jogador2);
-        }
 
-        printf("Digite o nome do terceiro jogador: ");
-        scanf(" %[^\n]s", &nome_jogador3);
+            while ((!is_string(nome_jogador2))) {
+                system("cls");
+                printf("Utilize apenas caracteres. Tente novamente. ");
+                printf("\nDigite o nome do segundo jogador: ");
+                scanf(" %[^\n]s", &nome_jogador2);
+            }
 
-        while ((!is_string(nome_jogador3))) {
-            system("cls");
-            printf("Utilize apenas caracteres. Tente novamente. ");
-            printf("\nDigite o nome do terceiro jogador: ");
+            printf("Digite o nome do terceiro jogador: ");
             scanf(" %[^\n]s", &nome_jogador3);
-        }
 
-        printf("Digite o nome do quarto jogador: ");
-        scanf(" %[^\n]s", &nome_jogador4);
+            while ((!is_string(nome_jogador3))) {
+                system("cls");
+                printf("Utilize apenas caracteres. Tente novamente. ");
+                printf("\nDigite o nome do terceiro jogador: ");
+                scanf(" %[^\n]s", &nome_jogador3);
+            }
 
-        while ((!is_string(nome_jogador4))) {
-            system("cls");
-            printf("Utilize apenas caracteres. Tente novamente. ");
-            printf("\nDigite o nome do quarto jogador: ");
+            printf("Digite o nome do quarto jogador: ");
             scanf(" %[^\n]s", &nome_jogador4);
-        }
+
+            while ((!is_string(nome_jogador4))) {
+                system("cls");
+                printf("Utilize apenas caracteres. Tente novamente. ");
+                printf("\nDigite o nome do quarto jogador: ");
+                scanf(" %[^\n]s", &nome_jogador4);
+            }
+
+            if (!strcmp(nome_jogador1, nome_jogador2) || !strcmp(nome_jogador1, nome_jogador3) || !strcmp(nome_jogador1, nome_jogador4) || !strcmp(nome_jogador2, nome_jogador3) || !strcmp(nome_jogador2, nome_jogador4) || !strcmp(nome_jogador3, nome_jogador4)) {
+                system("cls");
+                printf("Utilize nomes diferentes. Tente novamente.\n");
+            }
+
+        } while (!strcmp(nome_jogador1, nome_jogador2) || !strcmp(nome_jogador1, nome_jogador3) || !strcmp(nome_jogador1, nome_jogador4) || !strcmp(nome_jogador2, nome_jogador3) || !strcmp(nome_jogador2, nome_jogador4) || !strcmp(nome_jogador3, nome_jogador4));
 
     } else if (escolha == 0) {
         printf("Voce escolheu sair.\nTchau, ate a proxima!");

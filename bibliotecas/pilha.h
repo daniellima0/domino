@@ -2,11 +2,7 @@
 #define PILHA_PECA_H
 #define MAX 100
 #include <stdio.h>
-
-typedef struct {
-    int esquerda;
-    int direita;
-} tp_item;
+#include "tp_item.h"
 
 typedef struct {
     int topo;  // inicialmente topo = -1

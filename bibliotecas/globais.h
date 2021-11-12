@@ -1,7 +1,8 @@
 #ifndef GLOBAIS
 #define GLOBAIS
-#include "./pilha/pilha-peca.h"
-#include "./listade/listade-peca.h"
+#include "tp_item.h"
+#include "pilha.h"
+#include "lista_de.h"
 
 char nome_jogador1[21];
 char nome_jogador2[21];

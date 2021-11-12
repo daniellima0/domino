@@ -3,7 +3,6 @@
 #include <time.h>
 #include <locale.h>
 #include "./bibliotecas/globais.h"
-#include "./bibliotecas/pilha/pilha-peca.h"
 
 void escolher_modo(int *x) {
     printf("Dois[2] ou Quatro[4] Jogadores?\nDigite zero[0] para sair.\n->");
@@ -224,6 +223,9 @@ int main() {
 
         imprime_pilha(mao_j1);
         imprime_pilha(mao_j2);
+
+        lista = inicializa_listad();
+
 
     } else if (escolha == 4) {
         tp_pilha mao_j1, mao_j2, mao_j3, mao_j4;

@@ -18,7 +18,7 @@ void escolher_modo(int *x) {
     }
 }
 
-void embaralhar(tp_item *monte) {
+void embaralhar(tp_pilha *monte) {
     tp_pilha p1, p2, p3, p4, p5;
     tp_item e;
     int num;
@@ -65,7 +65,7 @@ void embaralhar(tp_item *monte) {
 
 // transfere todos os items de uma pilha à outra no mesmo sentido (1) ou no sentido inverso (2)
 void transferir_entre_pilhas(tp_pilha *pilha_emissora, tp_pilha *pilha_receptora, int tipo) {
-    if (pilha_vazia(pilha_emissora) || pilha_cheia(pilha_receptora)) return 0;
+    if (pilha_vazia(pilha_emissora) || pilha_cheia(pilha_receptora)) return;
 
     tp_item e;
     tp_pilha pilha_auxiliar;
@@ -155,7 +155,7 @@ void ordenar_pecas(tp_pilha *pilha_original) {
 }
 
 int main() {
-    system("cls");
+    // system("cls");
 
     // regras(); Função pendente
 

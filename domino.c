@@ -1,18 +1,20 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
 #include "./bibliotecas/globais.h"
 
 void escolher_modo(int *x) {
-    printf("Dois[2] ou Quatro[4] Jogadores?\nDigite zero[0] para sair.\n->");
+    printf("Dois[2] ou Quatro[4] Jogadores?\n(digite zero[0] para sair)\n-> ");
     scanf("%d", x);
     while (1) {
         if (*x == 2 || *x == 4 || *x == 0)
             break;
         else {
             system("cls");
-            printf("Tente novamente.\nDois[2] ou Quatro[4] Jogadores?\nDigite zero[0] para sair.\n->");
+            printf("Tente novamente.\nDois[2] ou Quatro[4] Jogadores?\n(digite zero[0] para sair)\n->");
             scanf("%d", x);
         }
     }
@@ -154,9 +156,18 @@ void ordenar_pecas(tp_pilha *pilha_original) {
     transferir_entre_pilhas(&pilha_ordenada, pilha_original, 1);
 }
 
-int main() {
-    // system("cls");
+int is_string(char *string) {
+    int string_len = strlen(string);
 
+    for (int i = 0; i < string_len; ++i) {
+        if (isdigit(string[i]))
+            return 0;
+    }
+
+    return 1;
+}
+
+int main() {
     // regras(); Função pendente
 
     // Escolhendo o modo de jogo
@@ -164,20 +175,69 @@ int main() {
 
     if (escolha == 2) {
         printf("Voce escolheu jogar com dois jogadores.\n");
+
         printf("\nDigite o nome do primeiro jogador: ");
         scanf(" %[^\n]s", &nome_jogador1);
-        printf("Digite o nome do segundo jogador: ");
+
+        while ((!is_string(nome_jogador1))) {
+            system("cls");
+            printf("Utilize apenas caracteres. Tente novamente. ");
+            printf("\nDigite o nome do primeiro jogador: ");
+            scanf(" %[^\n]s", &nome_jogador1);
+        }
+
+        printf("\nDigite o nome do segundo jogador: ");
         scanf(" %[^\n]s", &nome_jogador2);
+
+        while ((!is_string(nome_jogador2))) {
+            system("cls");
+            printf("Utilize apenas caracteres. Tente novamente. ");
+            printf("\nDigite o nome do segundo jogador: ");
+            scanf(" %[^\n]s", &nome_jogador2);
+        }
+
     } else if (escolha == 4) {
         printf("Voce escolheu jogar com quatro jogadores.\n");
         printf("\nDigite o nome do primeiro jogador: ");
         scanf(" %[^\n]s", &nome_jogador1);
+
+        while ((!is_string(nome_jogador1))) {
+            system("cls");
+            printf("Utilize apenas caracteres. Tente novamente. ");
+            printf("\nDigite o nome do primeiro jogador: ");
+            scanf(" %[^\n]s", &nome_jogador1);
+        }
+
         printf("Digite o nome do segundo jogador: ");
         scanf(" %[^\n]s", &nome_jogador2);
+
+        while ((!is_string(nome_jogador2))) {
+            system("cls");
+            printf("Utilize apenas caracteres. Tente novamente. ");
+            printf("\nDigite o nome do segundo jogador: ");
+            scanf(" %[^\n]s", &nome_jogador2);
+        }
+
         printf("Digite o nome do terceiro jogador: ");
         scanf(" %[^\n]s", &nome_jogador3);
+
+        while ((!is_string(nome_jogador3))) {
+            system("cls");
+            printf("Utilize apenas caracteres. Tente novamente. ");
+            printf("\nDigite o nome do terceiro jogador: ");
+            scanf(" %[^\n]s", &nome_jogador3);
+        }
+
         printf("Digite o nome do quarto jogador: ");
         scanf(" %[^\n]s", &nome_jogador4);
+
+        while ((!is_string(nome_jogador4))) {
+            system("cls");
+            printf("Utilize apenas caracteres. Tente novamente. ");
+            printf("\nDigite o nome do quarto jogador: ");
+            scanf(" %[^\n]s", &nome_jogador4);
+        }
+
     } else if (escolha == 0) {
         printf("Voce escolheu sair.\nTchau, ate a proxima!");
         return 0;
@@ -225,7 +285,6 @@ int main() {
         imprime_pilha(mao_j2);
 
         lista = inicializa_listad();
-
 
     } else if (escolha == 4) {
         tp_pilha mao_j1, mao_j2, mao_j3, mao_j4;

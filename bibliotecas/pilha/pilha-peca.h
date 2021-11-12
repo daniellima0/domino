@@ -1,8 +1,12 @@
-#include <stdio.h>
+#ifndef PILHA_PECA_H
+#define PILHA_PECA_H
 #define MAX 100
+#include <stdio.h>
 
-typedef tp_peca
-    tp_item;
+typedef struct {
+    int esquerda;
+    int direita;
+} tp_item;
 
 typedef struct {
     int topo;  // inicialmente topo = -1
@@ -45,7 +49,7 @@ int top(tp_pilha *p, tp_item *e) {  // top: mostra quem ta no topo sem desempilh
 
 void imprime_pilha(tp_pilha p) {
     tp_item e;
-    printf("Pilha:\n");
+    printf("\nPilha:\n");
     while (!pilha_vazia(&p)) {
         pop(&p, &e);
         printf("|%d|", e.esquerda);
@@ -56,6 +60,8 @@ void imprime_pilha(tp_pilha p) {
 int altura_pilha(tp_pilha *p) {
     return p->topo + 1;
 }
+
+#endif
 
 /*
 Implementar uma função que receba uma pilha

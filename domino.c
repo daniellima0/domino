@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
-#include "globais.h"
-#include "pilha.h"
+#include "./bibliotecas/globais.h"
+#include "./bibliotecas/pilha/pilha-peca.h"
 
 void escolher_modo(int *x) {
     printf("Dois[2] ou Quatro[4] Jogadores?\nDigite zero[0] para sair.\n->");
@@ -19,9 +19,9 @@ void escolher_modo(int *x) {
     }
 }
 
-void embaralhar(tp_peca *monte) {
+void embaralhar(tp_item *monte) {
     tp_pilha p1, p2, p3, p4, p5;
-    tp_peca e;
+    tp_item e;
     int num;
 
     inicializa_pilha(&p1);
@@ -64,7 +64,7 @@ void embaralhar(tp_peca *monte) {
     }
 }
 
-// transfere items de uma pilha à outra no mesmo sentido (1) ou no sentido inverso (2)
+// transfere todos os items de uma pilha à outra no mesmo sentido (1) ou no sentido inverso (2)
 void transferir_entre_pilhas(tp_pilha *pilha_emissora, tp_pilha *pilha_receptora, int tipo) {
     if (pilha_vazia(pilha_emissora) || pilha_cheia(pilha_receptora)) return 0;
 
@@ -89,7 +89,7 @@ void transferir_entre_pilhas(tp_pilha *pilha_emissora, tp_pilha *pilha_receptora
     }
 }
 
-// ordenas peças de uma pilha de acordo com o somatório delas de forma crescente
+// ordenas peças de uma pilha de acordo com o somatório individual de forma crescente
 void ordenar_pecas(tp_pilha *pilha_original) {
     int referencia = 0, somatorio = 0, contador = 0;
     tp_item e1, e2;
@@ -101,6 +101,7 @@ void ordenar_pecas(tp_pilha *pilha_original) {
     tp_pilha *pilha_emissora, *pilha_receptora;
 
     while (altura_pilha(&pilha_ordenada) < 7) {
+        // A cada loop, os ponteiros pilha_emissora e pilha_receptora alternarão entre pilha original e auxiliar
         if (contador % 2 == 0) {
             pilha_emissora = pilha_original;
             pilha_receptora = &pilha_auxiliar;
@@ -112,13 +113,18 @@ void ordenar_pecas(tp_pilha *pilha_original) {
         referencia = 0;
         somatorio = 0;
 
+        // o loop só acabará quando a pilha emissora estiver vazia
         while (!pilha_vazia(pilha_emissora)) {
             pop(pilha_emissora, &e1);
             somatorio = e1.esquerda + e1.direita;
 
+            // Aqui existem 4 casos
+            // Caso 1: a peça removida da pilha emissora vai direto para a pilha ordenada, pois esta última está vazia
             if (somatorio > referencia && pilha_vazia(&pilha_ordenada)) {
                 push(&pilha_ordenada, e1);
                 referencia = somatorio;
+
+                // Caso 2: a peça removida da pilha emissora tem um somatório maior que o somatório da última peça colocada na pilha ordenada (este segundo somatório entende-se como o valor armazenado na variável referência), então a(s) peça(s) com valor de somatório igual ao da variável referência é(são) removida(s) da pilha ordenada e armazenada(s) na pilha receptora e a peca removida da pilha emissora vai para a pilha ordenada
             } else if (somatorio > referencia && !pilha_vazia(&pilha_ordenada)) {
                 while (1 && !pilha_vazia(&pilha_ordenada)) {
                     pop(&pilha_ordenada, &e2);
@@ -132,8 +138,11 @@ void ordenar_pecas(tp_pilha *pilha_original) {
                 }
                 push(&pilha_ordenada, e1);
                 referencia = somatorio;
+                // Caso 3: a peça removida da pilha emissora tem um somatório igual ao somatório da última peça colocada na pilha ordenada, logo vai direto para a pilha ordenada
             } else if (somatorio == referencia) {
                 push(&pilha_ordenada, e1);
+
+                // Caso 4: a peça removida da pilha emissora tem um somatório menor ao somatório da última peça colocada na pilha ordenada, logo vai direto para a pilha receptora
             } else if (somatorio < referencia) {
                 push(pilha_receptora, e1);
             }
@@ -142,19 +151,16 @@ void ordenar_pecas(tp_pilha *pilha_original) {
         contador++;
     }
 
+    // ao longo do looping, todas as peças se depositaram na pilha ordenada, logo elas tem que voltar para a pilha original
     transferir_entre_pilhas(&pilha_ordenada, pilha_original, 1);
-
-    imprime_pilha(*pilha_original);
 }
 
 int main() {
     system("cls");
-    int i, j;
-    int escolha;
 
     // regras(); Função pendente
 
-    // Escolha do modo de jogo
+    // Escolhendo o modo de jogo
     escolher_modo(&escolha);
 
     if (escolha == 2) {
@@ -163,9 +169,7 @@ int main() {
         scanf(" %[^\n]s", &nome_jogador1);
         printf("Digite o nome do segundo jogador: ");
         scanf(" %[^\n]s", &nome_jogador2);
-    }
-
-    if (escolha == 4) {
+    } else if (escolha == 4) {
         printf("Voce escolheu jogar com quatro jogadores.\n");
         printf("\nDigite o nome do primeiro jogador: ");
         scanf(" %[^\n]s", &nome_jogador1);
@@ -175,16 +179,10 @@ int main() {
         scanf(" %[^\n]s", &nome_jogador3);
         printf("Digite o nome do quarto jogador: ");
         scanf(" %[^\n]s", &nome_jogador4);
-    }
-
-    if (escolha == 0) {
+    } else if (escolha == 0) {
         printf("Voce escolheu sair.\nTchau, ate a proxima!");
         return 0;
     }
-
-    // Criando as pecas
-    tp_peca pecas[29];
-    int peca_atual = 0;
 
     for (i = 0; i <= 6; i++) {
         for (j = i; j <= 6; j++) {
@@ -194,8 +192,6 @@ int main() {
         }
     }
 
-    // Empilhando as pecas
-    tp_pilha monte;
     inicializa_pilha(&monte);
 
     for (i = 0; i < 28; i++) {
@@ -205,9 +201,9 @@ int main() {
     // Embaralhando o monte
     embaralhar(&monte);
 
-    // Distribuindo as pecas para cada jogador
+    // Distribuindo as peças para cada jogador
     // talvez o jogo ocorra todo dentro desses dois ifs.
-    tp_peca e;
+
     if (escolha == 2) {
         tp_pilha mao_j1, mao_j2;
         inicializa_pilha(&mao_j1);
@@ -223,46 +219,48 @@ int main() {
             push(&mao_j2, e);
         }
 
-        imprime_pilha(mao_j1);
-        printf("\n");
-        imprime_pilha(mao_j2);
-
         ordenar_pecas(&mao_j1);
         ordenar_pecas(&mao_j2);
 
-    } else {
-        if (escolha == 4) {
-            tp_pilha mao_j1, mao_j2, mao_j3, mao_j4;
-            inicializa_pilha(&mao_j1);
-            inicializa_pilha(&mao_j2);
-            inicializa_pilha(&mao_j3);
-            inicializa_pilha(&mao_j4);
+        imprime_pilha(mao_j1);
+        imprime_pilha(mao_j2);
 
-            for (i = 0; i < 7; i++) {
-                pop(&monte, &e);
-                push(&mao_j1, e);
-            }
+    } else if (escolha == 4) {
+        tp_pilha mao_j1, mao_j2, mao_j3, mao_j4;
+        inicializa_pilha(&mao_j1);
+        inicializa_pilha(&mao_j2);
+        inicializa_pilha(&mao_j3);
+        inicializa_pilha(&mao_j4);
 
-            for (i = 0; i < 7; i++) {
-                pop(&monte, &e);
-                push(&mao_j2, e);
-            }
-
-            for (i = 0; i < 7; i++) {
-                pop(&monte, &e);
-                push(&mao_j3, e);
-            }
-
-            for (i = 0; i < 7; i++) {
-                pop(&monte, &e);
-                push(&mao_j4, e);
-            }
-
-            ordenar_pecas(&mao_j1);
-            ordenar_pecas(&mao_j2);
-            ordenar_pecas(&mao_j3);
-            ordenar_pecas(&mao_j4);
+        for (i = 0; i < 7; i++) {
+            pop(&monte, &e);
+            push(&mao_j1, e);
         }
+
+        for (i = 0; i < 7; i++) {
+            pop(&monte, &e);
+            push(&mao_j2, e);
+        }
+
+        for (i = 0; i < 7; i++) {
+            pop(&monte, &e);
+            push(&mao_j3, e);
+        }
+
+        for (i = 0; i < 7; i++) {
+            pop(&monte, &e);
+            push(&mao_j4, e);
+        }
+
+        ordenar_pecas(&mao_j1);
+        ordenar_pecas(&mao_j2);
+        ordenar_pecas(&mao_j3);
+        ordenar_pecas(&mao_j4);
+
+        imprime_pilha(mao_j1);
+        imprime_pilha(mao_j2);
+        imprime_pilha(mao_j3);
+        imprime_pilha(mao_j4);
     }
 
     return 0;

@@ -1,5 +1,5 @@
-#ifndef PILHA_PECA_H
-#define PILHA_PECA_H
+#ifndef PILHA_H
+#define PILHA_H
 #define MAX 100
 #include <stdio.h>
 #include "tp_item.h"
@@ -45,12 +45,12 @@ int top(tp_pilha *p, tp_item *e) {  // top: mostra quem ta no topo sem desempilh
 
 void imprime_pilha(tp_pilha p) {
     tp_item e;
-    printf("\nPilha:\n");
+    printf("\n");
     while (!pilha_vazia(&p)) {
         pop(&p, &e);
-        printf("|%d|", e.esquerda);
-        printf("%d|", e.direita);
+        printf("|%d|%d| ", e.esquerda, e.direita);
     }
+    printf("\n");
 }
 
 int altura_pilha(tp_pilha *p) {

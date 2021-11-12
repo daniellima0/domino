@@ -1,5 +1,5 @@
-#ifndef LISTADE_PECA_H
-#define LISTADE_PECA_H
+#ifndef LISTA_DE_H
+#define LISTA_DE_H
 #include <stdio.h>
 #include <stdlib.h>
 #include "tp_item.h"

@@ -92,7 +92,7 @@ void transferir_entre_pilhas(tp_pilha *pilha_emissora, tp_pilha *pilha_receptora
 
 // ordenas peças de uma pilha de acordo com o somatório individual de forma crescente
 void ordenar_pecas(tp_pilha *pilha_original) {
-    int referencia = 0, somatorio = 0, contador = 0;
+    int referencia, somatorio, contador = 0;
     tp_item e1, e2;
     tp_pilha pilha_ordenada, pilha_auxiliar;
 
@@ -259,6 +259,7 @@ int main() {
         return 0;
     }
 
+    //Criando peças
     for (i = 0; i <= 6; i++) {
         for (j = i; j <= 6; j++) {
             pecas[peca_atual].esquerda = i;
@@ -269,6 +270,7 @@ int main() {
 
     inicializa_pilha(&monte);
 
+    //Populando monte com as peças
     for (i = 0; i < 28; i++) {
         push(&monte, pecas[i]);
     }
@@ -279,67 +281,61 @@ int main() {
     // Distribuindo as peças para cada jogador
     // talvez o jogo ocorra todo dentro desses dois ifs.
 
-    //alterar mao_j1, mao_j2, mao_j3, mao_j4 pelo respectivo jogador.mao
     if (escolha == 2) {
-        tp_pilha mao_j1, mao_j2;
-        inicializa_pilha(&mao_j1);
-        inicializa_pilha(&mao_j2);
+        inicializa_pilha(&jogador1.mao);
+        inicializa_pilha(&jogador2.mao);
 
         for (i = 0; i < 7; i++) {
             pop(&monte, &e);
-            push(&mao_j1, e);
+            push(&jogador1.mao, e);
         }
 
         for (i = 0; i < 7; i++) {
             pop(&monte, &e);
-            push(&mao_j2, e);
+            push(&jogador2.mao, e);
         }
 
-        ordenar_pecas(&mao_j1);
-        ordenar_pecas(&mao_j2);
+        ordenar_pecas(&jogador1.mao);
+        ordenar_pecas(&jogador2.mao);
 
-        imprime_pilha(mao_j1);
-        imprime_pilha(mao_j2);
-
-        //por que esse printf retorna null?
-        printf("\n%s\n", jogador2.mao);
+        imprime_pilha(jogador1.mao);
+        imprime_pilha(jogador2.mao);
 
     } else if (escolha == 4) {
-        tp_pilha mao_j1, mao_j2, mao_j3, mao_j4;
-        inicializa_pilha(&mao_j1);
-        inicializa_pilha(&mao_j2);
-        inicializa_pilha(&mao_j3);
-        inicializa_pilha(&mao_j4);
+        inicializa_pilha(&jogador1.mao);
+        inicializa_pilha(&jogador2.mao);
+        inicializa_pilha(&jogador3.mao);
+        inicializa_pilha(&jogador4.mao);
 
         for (i = 0; i < 7; i++) {
             pop(&monte, &e);
-            push(&mao_j1, e);
+            push(&jogador1.mao, e);
         }
 
         for (i = 0; i < 7; i++) {
             pop(&monte, &e);
-            push(&mao_j2, e);
+            push(&jogador2.mao, e);
         }
 
         for (i = 0; i < 7; i++) {
             pop(&monte, &e);
-            push(&mao_j3, e);
+            push(&jogador3.mao, e);
         }
 
         for (i = 0; i < 7; i++) {
             pop(&monte, &e);
-            push(&mao_j4, e);
+            push(&jogador4.mao, e);
         }
 
-        ordenar_pecas(&mao_j1);
-        ordenar_pecas(&mao_j2);
-        ordenar_pecas(&mao_j3);
-        ordenar_pecas(&mao_j4);
+        ordenar_pecas(&jogador1.mao);
+        ordenar_pecas(&jogador2.mao);
+        ordenar_pecas(&jogador3.mao);
+        ordenar_pecas(&jogador4.mao);
 
-        imprime_pilha(mao_j1);
-        imprime_pilha(mao_j2);
-        imprime_pilha(mao_j3);
-        imprime_pilha(mao_j4);
+        imprime_pilha(jogador1.mao);
+        imprime_pilha(jogador2.mao);
+        imprime_pilha(jogador3.mao);
+        imprime_pilha(jogador4.mao);
     }
 
     return 0;

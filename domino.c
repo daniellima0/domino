@@ -158,8 +158,8 @@ void ordenar_pecas(tp_pilha *pilha_original) {
 
 int is_string(char *string) {
     int string_len = strlen(string);
-
-    for (int i = 0; i < string_len; ++i) {
+	int i;
+    for (i = 0; i < string_len; ++i) {
         if (isdigit(string[i]))
             return 0;
     }

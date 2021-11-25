@@ -319,10 +319,12 @@ int main() {
         int posicao = 0;
         char destino;
 
+        mesa = inicializa_listad();
+
         while (fim_de_jogo_2jogadores(&jogador1.mao, &jogador2.mao)) {
             system("cls");
 
-            // imprime_tabuleiro();
+            imprime_listad(&mesa, 1);
 
             if (contador_temp % 2 == 0) {
                 printf("Vez do jogador %s\n", jogador1.nome);
@@ -332,7 +334,10 @@ int main() {
                 scanf("%d", &posicao); 
                 printf("\n");
                 while (1){
-                    if (posicao > 0 && posicao <= num_pecas_jogador1)
+                    if (posicao > 0 && posicao <= num_pecas_jogador1)   
+                        //  CHECAR SE TEM SÓ UMA PEÇA
+                        //  CHECAR SE TEM ZERO PEÇAS
+                        //  CHEGAR AS PONTAS
                     // NÃO PODE DIGITAR UM NUM MAIOR NEM MENOR Q O NUMERO DE PEÇAS DA MAO (FEITO)
                     // NÃO PODE PODE ESCOLHER UM PEÇA INVALIDA, QUE N CORRESPONDE A NUNHUMA PONTA DA MESA (PENDENTE)
                     break;

@@ -13,14 +13,14 @@ typedef struct tp_no_aux {
 typedef struct {
     tp_no *ini;
     tp_no *fim;
-    // int tamanho;
+    int tamanho;
 } tp_listad;
 
 tp_listad *inicializa_listad() {
     tp_listad *lista = (tp_listad *)malloc(sizeof(tp_listad));
     lista->ini = NULL;
     lista->fim = NULL;
-    // lista->tamanho = 0;
+    lista->tamanho = 0;
     return lista;
 }
 
@@ -35,7 +35,8 @@ tp_no *aloca() {
     return pt;
 }
 
-int insere_listad_no_fim(tp_listad *lista, tp_item e) {
+//insere_listad_no_fim
+int insere_listad_na_direita(tp_listad *lista, tp_item e) { 
     tp_no *novo;
     novo = aloca();
     if (!novo) return 0;
@@ -50,17 +51,35 @@ int insere_listad_no_fim(tp_listad *lista, tp_item e) {
         lista->fim->prox = novo;
         lista->fim = novo;
     }
-    // lista->tamanho++;
+    lista->tamanho++;
     return 1;
 }
 
-// Insere_listad_no_inicio
-
-// Criar um ponteiro que aponta sempre para o primeiro e para o último
+// Insere_listade_no_inicio
+int insere_listad_na_esquerda(tp_listad *lista, tp_item e){
+    tp_no *novo;
+    novo = aloca();
+    if (!novo) return 0;
+    novo->info = e;
+    if (lista_vazia(lista)) {
+        novo->prox = NULL;
+        novo->ant = NULL;
+        lista->ini = lista->fim = novo;
+    } else {
+        novo->prox = lista->ini;
+        novo->ant = NULL;
+        lista->ini->ant = novo;
+        lista->ini = novo;
+    }
+    lista->tamanho++;
+    return 1;
+} 
 
 void imprime_listad(tp_listad *lista, int ordem) {
     tp_no *atu;
 
+    if(lista_vazia(lista)) return;
+    
     switch (ordem) {
         case 1:
             atu = lista->ini;

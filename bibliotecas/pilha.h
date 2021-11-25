@@ -37,6 +37,23 @@ int pop(tp_pilha *p, tp_item *e) {  // pop = DESEMPILHAR; retorna para a main o 
     return 1;
 }
 
+tp_item peca_escolhida(tp_pilha *p, tp_item *e, int posicao) {  
+    tp_pilha paux;
+    inicializa_pilha(&paux);
+    tp_item peca_escolhida;
+    while(posicao-1){   // TIRAR O Q TA EM CIMA
+        pop(p, e);
+        push(&paux, *e);
+        posicao--;
+    }
+    pop(p, &peca_escolhida);
+    while(!pilha_vazia(&paux)){ // DEVOLVE O Q TAVA EM CIMA
+        pop(&paux, e);
+        push(p, *e);
+    }
+    return peca_escolhida; // RETORNA PECA ESCOLIDA
+}
+
 int top(tp_pilha *p, tp_item *e) {  // top: mostra quem ta no topo sem desempilhar
     if (pilha_vazia(p)) return 0;
     *e = p->item[p->topo];

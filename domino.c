@@ -168,20 +168,29 @@ int is_string(char *string) {
 }
 
 int fim_de_jogo_2jogadores (tp_jogador *mao1, tp_pilha *mao2){
-    int jogador1 = 0, jogador2 = 0; //Indicar quem ganhou
+    int jog1 = 0, jog2 = 0; //Indicar quem ganhou
     if(pilha_vazia(mao1)){
-        jogador1 = 1;
-        printf("O %s ganhou o jogo!", nome_jogador1); //NÃO QUER PRINTAR O NOME
+        jog1 = 1;
+        printf("O %s ganhou o jogo!", jogador1.nome); 
     }
     if(pilha_vazia(mao2)){
-        jogador2 = 1;
-        printf("O %s ganhou o jogo!", nome_jogador2); //NÃO QUER PRINTAR O NOME
+        jog2 = 1;
+        printf("O %s ganhou o jogo!", jogador2.nome);
     }
-    if(jogador1 || jogador2) return 0;
+    if(jog1 || jog2) return 0;
     else return 1;
 }
 
-// void imprime_tabuleiro();
+int verificar_extremidades(tp_listad mesa, tp_item peca){
+    
+    tp_no *pini = mesa.ini;
+    
+    if(pini->info){
+
+    }
+
+}
+
 
 int main() {
     // regras(); Função pendente
@@ -324,23 +333,21 @@ int main() {
         while (fim_de_jogo_2jogadores(&jogador1.mao, &jogador2.mao)) {
             system("cls");
 
-            imprime_listad(&mesa, 1);
+            if(contador_temp > 0) imprime_listad(&mesa, 1);
 
             if (contador_temp % 2 == 0) {
                 printf("Vez do jogador %s\n", jogador1.nome);
                 imprime_pilha(jogador1.mao);
                 int num_pecas_jogador1 = altura_pilha(&jogador1.mao);
                 printf("Digite a posicao da peca: ");
-                scanf("%d", &posicao); 
+                scanf("%d", &posicao);
                 printf("\n");
                 while (1){
-                    if (posicao > 0 && posicao <= num_pecas_jogador1)   
-                        //  CHECAR SE TEM SÓ UMA PEÇA
+                    if (posicao > 0 && posicao <= num_pecas_jogador1) break;  
                         //  CHECAR SE TEM ZERO PEÇAS
                         //  CHEGAR AS PONTAS
                     // NÃO PODE DIGITAR UM NUM MAIOR NEM MENOR Q O NUMERO DE PEÇAS DA MAO (FEITO)
                     // NÃO PODE PODE ESCOLHER UM PEÇA INVALIDA, QUE N CORRESPONDE A NUNHUMA PONTA DA MESA (PENDENTE)
-                    break;
                 else {
                     printf("Tente novamente.\nDigite a posicao da peca: ");
                     scanf("%d", &posicao); 

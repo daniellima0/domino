@@ -190,7 +190,7 @@ int verificar_extremidades(tp_listad *mesa, tp_item peca) {
     if (lista_vazia(mesa)) return 1;
 
     tp_item ponta_esquerda = mesa->ini->info;
-    tp_item ponta_direita = mesa->ini->info;
+    tp_item ponta_direita = mesa->fim->info;
 
     if (ponta_esquerda.esquerda == peca.esquerda || ponta_esquerda.esquerda == peca.direita || ponta_direita.direita == peca.esquerda || ponta_direita.direita == peca.direita) {
         return 1;

@@ -7,14 +7,14 @@
 #include "./bibliotecas/globais.h"
 
 void escolher_modo(int *x) {
-    printf("Dois[2] ou Quatro[4] Jogadores?\n(digite zero[0] para sair)\n-> ");
+    printf("Dois [2] ou Quatro [4] Jogadores?\n(digite zero [0] para sair)\n-> ");
     scanf("%d", x);
     while (1) {
         if (*x == 2 || *x == 4 || *x == 0)
             break;
         else {
             system("cls");
-            printf("Tente novamente.\nDois[2] ou Quatro[4] Jogadores?\n(digite zero[0] para sair)\n->");
+            printf("Tente novamente.\nDois [2] ou Quatro [4] Jogadores?\n(digite zero [0] para sair)\n->");
             scanf("%d", x);
         }
     }
@@ -167,6 +167,18 @@ int is_string(char *string) {
     return 1;
 }
 
+int fim_de_jogo_2jogadores (tp_pilha *mao1, tp_pilha *mao2){
+    int jogador1 = 0, jogador2 = 0; //Indicar quem ganhou
+    if(pilha_vazia(mao1)){
+        jogador1 = 1;
+    }
+    if(pilha_vazia(mao2)){
+        jogador2 = 1;
+    }
+    if(jogador1 || jogador2) return 0;
+    else return 1;
+}
+
 int main() {
     // regras(); Função pendente
 
@@ -302,7 +314,7 @@ int main() {
         int posicao = 0;
         char destino;
 
-        while (contador_temp < 3) {
+        while (fim_de_jogo_2jogadores(&jogador1.mao, &jogador2.mao)) {
             system("cls");
 
             // imprime_tabuleiro();
@@ -310,14 +322,51 @@ int main() {
             if (contador_temp % 2 == 0) {
                 printf("Vez do jogador %s\n", jogador1.nome);
                 imprime_pilha(jogador1.mao);
-                scanf("Digite a posicao da peca: %d\n", &posicao);
-                scanf("Digite a posicao da peca: %c\n", &destino);
+                printf("Digite a posicao da peca: ");
+                scanf("%d", &posicao); 
+                // NÃO PODE DIGITAR UM NUM MAIOR NEM MENOR Q O NUMERO DE PEÇAS DA MAO E NEM UM UMA PEÇA QUE NÃO ESTEJA EM NUNHUM PONTA DO JOGO. BOA SORTE, VAI PRECISAR =)
+                printf("\n");
+                while (1) {
+                    if (destino == 'E' || destino == 'D')
+                    break;
+                else {
+                    printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+                    scanf(" %c", &destino);
+                    printf("\n");
+                    }
+                }                
+                printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+                scanf(" %c", &destino);
+                printf("\n");
+                while (1) {
+                    if (destino == 'E' || destino == 'D')
+                    break;
+                else {
+                    printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+                    scanf(" %c", &destino);
+                    printf("\n");
+                    }
+                }
+                system("pause");
             } else if (contador_temp % 2 != 0) {
                 printf("Vez do jogador %s\n", jogador2.nome);
                 imprime_pilha(jogador2.mao);
-                scanf("Digite a posicao da peca: %d\n", &posicao);
-                scanf("Digite a posicao da peca: %c\n", &destino);
-                printf("aaaaa");
+                printf("Digite a posicao da peca: ");
+                scanf("%d", &posicao);
+                printf("\n");
+                printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+                scanf(" %c", &destino);
+                printf("\n");
+                while (1) {
+                    if (destino == 'E' || destino == 'D')
+                    break;
+                else {
+                    printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+                    scanf(" %c", &destino);
+                    printf("\n");
+                    }
+                }
+                system("pause");
             }
 
             contador_temp++;

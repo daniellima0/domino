@@ -167,17 +167,21 @@ int is_string(char *string) {
     return 1;
 }
 
-int fim_de_jogo_2jogadores (tp_pilha *mao1, tp_pilha *mao2){
+int fim_de_jogo_2jogadores (tp_jogador *mao1, tp_pilha *mao2){
     int jogador1 = 0, jogador2 = 0; //Indicar quem ganhou
     if(pilha_vazia(mao1)){
         jogador1 = 1;
+        printf("O %s ganhou o jogo!", nome_jogador1); //NÃO QUER PRINTAR O NOME
     }
     if(pilha_vazia(mao2)){
         jogador2 = 1;
+        printf("O %s ganhou o jogo!", nome_jogador2); //NÃO QUER PRINTAR O NOME
     }
     if(jogador1 || jogador2) return 0;
     else return 1;
 }
+
+// void imprime_tabuleiro();
 
 int main() {
     // regras(); Função pendente
@@ -215,8 +219,9 @@ int main() {
             }
 
         } while (!strcmp(jogador1.nome, jogador2.nome));
-
-    } else if (escolha == 4) {
+    } 
+    
+    else if (escolha == 4) {
         do {
             printf("Voce escolheu jogar com quatro jogadores.\n");
             printf("\nDigite o nome do primeiro jogador: ");
@@ -322,16 +327,18 @@ int main() {
             if (contador_temp % 2 == 0) {
                 printf("Vez do jogador %s\n", jogador1.nome);
                 imprime_pilha(jogador1.mao);
+                int num_pecas_jogador1 = altura_pilha(&jogador1.mao);
                 printf("Digite a posicao da peca: ");
                 scanf("%d", &posicao); 
-                // NÃO PODE DIGITAR UM NUM MAIOR NEM MENOR Q O NUMERO DE PEÇAS DA MAO E NEM UM UMA PEÇA QUE NÃO ESTEJA EM NUNHUM PONTA DO JOGO. BOA SORTE, VAI PRECISAR =)
                 printf("\n");
-                while (1) {
-                    if (destino == 'E' || destino == 'D')
+                while (1){
+                    if (posicao > 0 && posicao <= num_pecas_jogador1)
+                    // NÃO PODE DIGITAR UM NUM MAIOR NEM MENOR Q O NUMERO DE PEÇAS DA MAO (FEITO)
+                    // NÃO PODE PODE ESCOLHER UM PEÇA INVALIDA, QUE N CORRESPONDE A NUNHUMA PONTA DA MESA (PENDENTE)
                     break;
                 else {
-                    printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
-                    scanf(" %c", &destino);
+                    printf("Tente novamente.\nDigite a posicao da peca: ");
+                    scanf("%d", &posicao); 
                     printf("\n");
                     }
                 }                
@@ -342,18 +349,29 @@ int main() {
                     if (destino == 'E' || destino == 'D')
                     break;
                 else {
-                    printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+                    printf("Tente novamente.\nDigite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
                     scanf(" %c", &destino);
                     printf("\n");
                     }
                 }
                 system("pause");
+                // imprime_tabuleiro();
             } else if (contador_temp % 2 != 0) {
                 printf("Vez do jogador %s\n", jogador2.nome);
                 imprime_pilha(jogador2.mao);
+                int num_pecas_jogador2 = altura_pilha(&jogador2.mao);
                 printf("Digite a posicao da peca: ");
                 scanf("%d", &posicao);
                 printf("\n");
+                while (1){
+                    if (posicao > 0 && posicao <= num_pecas_jogador2)// NÃO PODE DIGITAR UM NUM MAIOR NEM MENOR Q O NUMERO DE PEÇAS DA MAO E NEM UM UMA PEÇA QUE NÃO ESTEJA EM NUNHUMA PONTA DO JOGO. BOA SORTE, VAI PRECISAR =)
+                    break;
+                else {
+                    printf("Tente novamente.\nDigite a posicao da peca: ");
+                    scanf("%d", &posicao); 
+                    printf("\n");
+                    }
+                } 
                 printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
                 scanf(" %c", &destino);
                 printf("\n");
@@ -361,18 +379,24 @@ int main() {
                     if (destino == 'E' || destino == 'D')
                     break;
                 else {
-                    printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+                    printf("Tente novamente.\nDigite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
                     scanf(" %c", &destino);
                     printf("\n");
                     }
                 }
                 system("pause");
             }
-
+            /* tp_item ilv;
+            pop(&jogador1.mao, &ilv);pop(&jogador1.mao, &ilv);pop(&jogador1.mao, &ilv); */
             contador_temp++;
         }
+    } 
+    
 
-    } else if (escolha == 4) {
+
+
+
+    else if (escolha == 4) {
         inicializa_pilha(&jogador1.mao);
         inicializa_pilha(&jogador2.mao);
         inicializa_pilha(&jogador3.mao);

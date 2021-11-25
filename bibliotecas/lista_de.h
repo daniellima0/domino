@@ -54,6 +54,10 @@ int insere_listad_no_fim(tp_listad *lista, tp_item e) {
     return 1;
 }
 
+// Insere_listad_no_inicio
+
+// Criar um ponteiro que aponta sempre para o primeiro e para o último
+
 void imprime_listad(tp_listad *lista, int ordem) {
     tp_no *atu;
 

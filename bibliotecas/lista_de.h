@@ -36,7 +36,7 @@ tp_no *aloca() {
 }
 
 //insere_listad_no_fim
-int insere_listad_na_direita(tp_listad *lista, tp_item e) { 
+int insere_listad_na_direita(tp_listad *lista, tp_item e) {
     tp_no *novo;
     novo = aloca();
     if (!novo) return 0;
@@ -56,7 +56,7 @@ int insere_listad_na_direita(tp_listad *lista, tp_item e) {
 }
 
 // Insere_listade_no_inicio
-int insere_listad_na_esquerda(tp_listad *lista, tp_item e){
+int insere_listad_na_esquerda(tp_listad *lista, tp_item e) {
     tp_no *novo;
     novo = aloca();
     if (!novo) return 0;
@@ -73,18 +73,18 @@ int insere_listad_na_esquerda(tp_listad *lista, tp_item e){
     }
     lista->tamanho++;
     return 1;
-} 
+}
 
 void imprime_listad(tp_listad *lista, int ordem) {
     tp_no *atu;
 
-    if(lista_vazia(lista)) return;
-    
+    if (lista_vazia(lista)) return;
+
     switch (ordem) {
         case 1:
             atu = lista->ini;
             while (atu != NULL) {
-                printf("|%d|%d| ", atu->info.esquerda, atu->info.direita);  
+                printf("|%d|%d| ", atu->info.esquerda, atu->info.direita);
                 atu = atu->prox;
             }
             break;

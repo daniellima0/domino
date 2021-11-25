@@ -158,7 +158,7 @@ void ordenar_pecas(tp_pilha *pilha_original) {
 
 int is_string(char *string) {
     int string_len = strlen(string);
-	int i;
+    int i;
     for (i = 0; i < string_len; ++i) {
         if (isdigit(string[i]))
             return 0;
@@ -298,8 +298,30 @@ int main() {
         ordenar_pecas(&jogador1.mao);
         ordenar_pecas(&jogador2.mao);
 
-        imprime_pilha(jogador1.mao);
-        imprime_pilha(jogador2.mao);
+        int contador_temp = 0;  //variável temporária
+        int posicao = 0;
+        char destino;
+
+        while (contador_temp < 3) {
+            system("cls");
+
+            // imprime_tabuleiro();
+
+            if (contador_temp % 2 == 0) {
+                printf("Vez do jogador %s\n", jogador1.nome);
+                imprime_pilha(jogador1.mao);
+                scanf("Digite a posicao da peca: %d\n", &posicao);
+                scanf("Digite a posicao da peca: %c\n", &destino);
+            } else if (contador_temp % 2 != 0) {
+                printf("Vez do jogador %s\n", jogador2.nome);
+                imprime_pilha(jogador2.mao);
+                scanf("Digite a posicao da peca: %d\n", &posicao);
+                scanf("Digite a posicao da peca: %c\n", &destino);
+                printf("aaaaa");
+            }
+
+            contador_temp++;
+        }
 
     } else if (escolha == 4) {
         inicializa_pilha(&jogador1.mao);

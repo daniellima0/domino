@@ -17,7 +17,7 @@ int peca_atual = 0;
 
 tp_pilha monte;
 
-tp_listad *mesa;  //checar se precisa do ponteiro mesmo
+tp_listad *mesa;
 
 tp_jogador jogador1;
 tp_jogador jogador2;

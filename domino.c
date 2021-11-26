@@ -154,7 +154,7 @@ int is_string(char *string) {
 }
 
 int checar_fim_do_jogo(tp_pilha *mao1, tp_pilha *mao2) {  //adicionar checagem para finalizar o jogo quando não houver mais peça para jogar
-    int jog1 = 0, jog2 = 0;                               //Indicar quem ganhou
+    int jog1 = 0, jog2 = 0; //Indicar quem ganhou
 
     if (pilha_vazia(mao1)) {
         jog1 = 1;
@@ -192,7 +192,11 @@ void inverte_posi(tp_item *peca){
 }
 
 int destino(tp_item peca){
-    if (lista_vazia(mesa)) return 1;
+    
+    if (lista_vazia(mesa)) {
+        insere_listad_na_esquerda(mesa, peca);  
+        return 1;
+    }
 
     int ME = mesa->ini->info.esquerda;  // MESA ESQUERDA
     int MD = mesa->fim->info.direita;   // MESA DIREITA
@@ -201,7 +205,7 @@ int destino(tp_item peca){
     char destino;
 
     //1º CASO
-    if ((PE == ME || PE == MD) && (PD == ME || PD == MD)) {
+    if ((PE == ME && PD == MD) || (PD == ME && PE == MD) || (PE == MD && PE == ME) || (PD == MD && PD == ME)) {
 
         while (1) {
             printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
@@ -217,41 +221,101 @@ int destino(tp_item peca){
             if(PE == ME){
                 inverte_posi(&peca);
                 insere_listad_na_esquerda(mesa, peca);
+                return 0; 
             }else{
                 insere_listad_na_esquerda(mesa, peca);
+                return 0; 
             }
         }
 
         if(escolha == 'D'){
             if(PD == MD){
                 inverte_posi(&peca);
-                insere_listad_na_esquerda(mesa, peca);
+                insere_listad_na_direita(mesa, peca);
+                return 0; 
             }else{
-                insere_listad_na_esquerda(mesa, peca);
+                insere_listad_na_direita(mesa, peca);
+                return 0; 
             }
         }
 
     }
 
     //2º CASO
-    if ((PE == ME || PE == MD) || (PD == ME || PD == MD)){
+    if ((PE == ME || PE == MD) || (PD == ME || PD == MD)) {
         if(PE == ME){
             inverte_posi(&peca);
-            insere_listad_na_esquerda(mesa, peca); 
+            insere_listad_na_esquerda(mesa, peca);
+            return 0; 
         }
         if(PE == MD){
-            insere_listad_na_esquerda(mesa, peca);
+            insere_listad_na_direita(mesa, peca);
+            return 0; 
         }
-        if(PD == PE){
-            insere_listad_na_esquerda(mesa, peca);
+        if(PD == MD){
+            inverte_posi(&peca);
+            insere_listad_na_direita(mesa, peca);
+            return 0; 
         }
         if(PD == ME){
-            inverte_posi(&peca);
-            insere_listad_na_esquerda(mesa, peca); 
+            insere_listad_na_esquerda(mesa, peca);
+            return 0; 
         }
     }
     return 0;
 }
+
+int habbo_hotel(){
+    
+}
+
+tp_item verificar(tp_jogador *jog) {
+    tp_pilha paux;
+    inicializa_pilha(&paux);
+    tp_item peca_escolhida, e;
+    int posicao;
+    int altura = altura_pilha(&jog->mao);
+
+    while(1){
+        
+        while (1) {
+            printf("\nDigite a posicao da peca: ");
+            scanf("%d", &posicao);
+            printf("\n");
+
+            if (posicao > 0 && posicao <= altura) {
+                break;
+            }
+
+            printf("Tente novamente.\n");
+        }
+        
+        while (posicao - 1) { 
+            pop(&jog->mao , &e);
+            push(&paux, e);
+            posicao--;
+        }
+        
+        pop(&jog->mao, &peca_escolhida);
+        if(validar_peca(mesa, peca_escolhida)){
+            while (!pilha_vazia(&paux)) { 
+            pop(&paux, &e);
+            push(&jog->mao, e);
+            }
+        return peca_escolhida;
+        }
+        else{
+            printf("Opcao invalida. Nao eh permitido gato.\n");
+            push(&jog->mao, peca_escolhida);
+            while (!pilha_vazia(&paux)) {
+            pop(&paux, &e);
+            push(&jog->mao, e);
+            }
+        }
+    }  
+    return peca_escolhida;
+}
+
 
 int main() {
     // regras(); Função pendente
@@ -333,9 +397,10 @@ int main() {
 
         if (rodada % 2 == 0) {
             printf("Vez do jogador %s\n", jogador1.nome);
+            
             imprime_pilha(jogador1.mao);
             
-            tp_item peca_valida = verificar(&jogador1.mao);
+            tp_item peca_valida = verificar(&jogador1);
             
             destino(peca_valida);
         }
@@ -344,7 +409,7 @@ int main() {
             printf("Vez do jogador %s\n", jogador2.nome);
             imprime_pilha(jogador2.mao);
 
-            tp_item peca_valida = verificar(&jogador2.mao);
+            tp_item peca_valida = verificar(&jogador2);
             
             destino(peca_valida);
 

@@ -51,95 +51,32 @@ void embaralhar(tp_pilha *monte) {
     }
 }
 
-// transfere todos os items de uma pilha à outra no mesmo sentido (1) ou no sentido inverso (2)
-void transferir_entre_pilhas(tp_pilha *pilha_emissora, tp_pilha *pilha_receptora, int tipo) {
-    if (pilha_vazia(pilha_emissora) || pilha_cheia(pilha_receptora)) return;
-
+// SHELL SORT
+void ordenar_pecas(tp_pilha *p) {
+    printf("\n\n\n%d\n\n", altura_pilha(p));
+    tp_item aux[altura_pilha(p)];
     tp_item e;
-    tp_pilha pilha_auxiliar;
-    inicializa_pilha(&pilha_auxiliar);
-
-    if (tipo == 1) {
-        while (!pilha_vazia(pilha_emissora)) {
-            pop(pilha_emissora, &e);
-            push(&pilha_auxiliar, e);
-        }
-        while (!pilha_vazia(&pilha_auxiliar)) {
-            pop(&pilha_auxiliar, &e);
-            push(pilha_receptora, e);
-        }
-    } else if (tipo == 2) {
-        while (!pilha_vazia(pilha_emissora)) {
-            pop(pilha_emissora, &e);
-            push(pilha_receptora, e);
-        }
+    int n = 0, i, j, k;
+    
+    while(!pilha_vazia(p)){
+        pop(p, &e);
+        aux[n++] = e;
     }
-}
-
-// ordenas peças de uma pilha de acordo com o somatório individual de forma crescente
-void ordenar_pecas(tp_pilha *pilha_original) {
-    int referencia, somatorio, contador = 0;
-    tp_item e1, e2;
-    tp_pilha pilha_ordenada, pilha_auxiliar;
-
-    inicializa_pilha(&pilha_ordenada);
-    inicializa_pilha(&pilha_auxiliar);
-
-    tp_pilha *pilha_emissora, *pilha_receptora;
-
-    while (altura_pilha(&pilha_ordenada) < 7) {
-        // A cada loop, os ponteiros pilha_emissora e pilha_receptora alternarão entre pilha original e auxiliar
-        if (contador % 2 == 0) {
-            pilha_emissora = pilha_original;
-            pilha_receptora = &pilha_auxiliar;
-        } else if (contador % 2 != 0) {
-            pilha_emissora = &pilha_auxiliar;
-            pilha_receptora = pilha_original;
-        }
-
-        referencia = 0;
-        somatorio = 0;
-
-        // o loop só acabará quando a pilha emissora estiver vazia
-        while (!pilha_vazia(pilha_emissora)) {
-            pop(pilha_emissora, &e1);
-            somatorio = e1.esquerda + e1.direita;
-
-            // Aqui existem 4 casos
-            // Caso 1: a peça removida da pilha emissora vai direto para a pilha ordenada, pois esta última está vazia
-            if (somatorio > referencia && pilha_vazia(&pilha_ordenada)) {
-                push(&pilha_ordenada, e1);
-                referencia = somatorio;
-
-                // Caso 2: a peça removida da pilha emissora tem um somatório maior que o somatório da última peça colocada na pilha ordenada (este segundo somatório entende-se como o valor armazenado na variável referência), então a(s) peça(s) com valor de somatório igual ao da variável referência é(são) removida(s) da pilha ordenada e armazenada(s) na pilha receptora e a peca removida da pilha emissora vai para a pilha ordenada
-            } else if (somatorio > referencia && !pilha_vazia(&pilha_ordenada)) {
-                while (1 && !pilha_vazia(&pilha_ordenada)) {
-                    pop(&pilha_ordenada, &e2);
-
-                    if (referencia != (e2.esquerda + e2.direita)) {
-                        push(&pilha_ordenada, e2);
-                        break;
-                    }
-
-                    push(pilha_receptora, e2);
-                }
-                push(&pilha_ordenada, e1);
-                referencia = somatorio;
-                // Caso 3: a peça removida da pilha emissora tem um somatório igual ao somatório da última peça colocada na pilha ordenada, logo vai direto para a pilha ordenada
-            } else if (somatorio == referencia) {
-                push(&pilha_ordenada, e1);
-
-                // Caso 4: a peça removida da pilha emissora tem um somatório menor ao somatório da última peça colocada na pilha ordenada, logo vai direto para a pilha receptora
-            } else if (somatorio < referencia) {
-                push(pilha_receptora, e1);
+    
+    for(i = n/2; i>=1; i/=2){
+        for(j = i; j < n; j++){
+            for(k = j-i; k>=0 && ((aux[k+i].esquerda + aux[k+i].direita) > (aux[k].esquerda + aux[k].direita)); k-=i){
+                e = aux[k+i];
+                aux[k+i] = aux[k];
+                aux[k] = e; 
             }
         }
-
-        contador++;
     }
 
-    // ao longo do looping, todas as peças se depositaram na pilha ordenada, logo elas tem que voltar para a pilha original
-    transferir_entre_pilhas(&pilha_ordenada, pilha_original, 1);
+    for(i=0; i<n; i++){
+        push(p, aux[i]);
+    }
+    printf("\n\n\n%d\n\n", altura_pilha(p));
 }
 
 int is_string(char *string) {
@@ -153,17 +90,22 @@ int is_string(char *string) {
     return 1;
 }
 
-int checar_fim_do_jogo(tp_pilha *mao1, tp_pilha *mao2) {  //adicionar checagem para finalizar o jogo quando não houver mais peça para jogar
+int ver_se_tem_como_jogar(tp_pilha p);
+
+int checar_fim_do_jogo(tp_pilha *mao1, tp_pilha *mao2) {  
+    /*if(!ver_se_tem_como_jogar(*mao1) && lista_vazia(&monte) || !ver_se_tem_como_jogar(*mao2) && lista_vazia(&monte)){
+        printf("Acabou, sem ganhadores.\nFechou o jogo");
+    }*/
     int jog1 = 0, jog2 = 0; //Indicar quem ganhou
 
     if (pilha_vazia(mao1)) {
         jog1 = 1;
-        printf("O %s ganhou o jogo!", jogador1.nome);
+        printf("\t%s ganhou o jogo!", jogador1.nome);
     }
 
     if (pilha_vazia(mao2)) {
         jog2 = 1;
-        printf("O %s ganhou o jogo!", jogador2.nome);
+        printf("\t%s ganhou o jogo!", jogador2.nome);
     }
 
     if (jog1 || jog2)
@@ -265,8 +207,29 @@ int destino(tp_item peca){
     return 0;
 }
 
-int habbo_hotel(){
+void cave (tp_jogador *jog){
+    tp_item e;
+    pop(&monte, &e);
+    push(&jog->mao, e);
+    ordenar_pecas(&jog->mao);
+}
+
+int ver_se_tem_como_jogar(tp_pilha p){
+    int ME = mesa->ini->info.esquerda;
+    int MD = mesa->fim->info.direita;
     
+    tp_item aux[altura_pilha(&p)];
+    tp_item e;
+    int n = 0, i;
+    
+    while(!pilha_vazia(&p)){
+        
+        pop(&p, &e);
+        aux[n++] = e;
+    }
+    for(i = 0; i<n; i++){
+        if(aux[i].esquerda == ME || aux[i].esquerda == MD || aux[i].direita == ME || aux[i].direita == MD)  return 1;
+    }return 0;
 }
 
 tp_item verificar(tp_jogador *jog) {
@@ -274,11 +237,22 @@ tp_item verificar(tp_jogador *jog) {
     inicializa_pilha(&paux);
     tp_item peca_escolhida, e;
     int posicao;
-    int altura = altura_pilha(&jog->mao);
-
+    
     while(1){
         
+        if(!lista_vazia(mesa) && !lista_vazia(&monte) &&!ver_se_tem_como_jogar(jog->mao)){
+            do{
+                printf("Cave!\n");
+                system("pause");
+                cave(jog);
+                imprime_pilha(jog->mao);
+            }while(!lista_vazia(mesa) && !lista_vazia(&monte) && !ver_se_tem_como_jogar(jog->mao));
+        }
+
+        int altura = altura_pilha(&jog->mao);
+        
         while (1) {
+
             printf("\nDigite a posicao da peca: ");
             scanf("%d", &posicao);
             printf("\n");
@@ -388,7 +362,7 @@ int main() {
     int rodada = 0;
 
     mesa = inicializa_listad();
-
+    
     while (checar_fim_do_jogo(&jogador1.mao, &jogador2.mao)) {
         system("cls");
 

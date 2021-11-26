@@ -13,5 +13,23 @@ void escolher_modo(int *x) {
 }
 /*
 tp_item peca_retirada = verificar_peca(&jogador1.mao, posicao);
-                    if (validar_peca(mesa, peca_retirada)) break;
-                    */
+if (validar_peca(mesa, peca_retirada)) break;
+
+    //populando mesa para testar
+    tp_item peca_teste1;
+    peca_teste1.esquerda = 6;
+    peca_teste1.direita = 6;
+
+    tp_item peca_teste2;
+    peca_teste2.esquerda = 6;
+    peca_teste2.direita = 2;
+
+    tp_item peca_teste3;
+    peca_teste3.esquerda = 1;
+    peca_teste3.direita = 6;
+
+    insere_listad_na_direita(mesa, peca_teste1);
+    insere_listad_na_direita(mesa, peca_teste2);
+    insere_listad_na_esquerda(mesa, peca_teste3);
+
+*/

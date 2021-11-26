@@ -191,7 +191,7 @@ void inverte_posi(tp_item *peca){
     peca->direita = temp;
 }
 
-int destino(tp_listad *mesa, tp_item peca) {
+int destino(tp_item peca){
     if (lista_vazia(mesa)) return 1;
 
     int ME = mesa->ini->info.esquerda;  // MESA ESQUERDA
@@ -202,27 +202,53 @@ int destino(tp_listad *mesa, tp_item peca) {
 
     //1º CASO
     if ((PE == ME || PE == MD) && (PD == ME || PD == MD)) {
-        printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
-        scanf(" %c", &destino);
-        printf("\n");
 
         while (1) {
-            if (destino == 'E' || destino == 'D') break;
-                else {
-                    printf("Tente novamente.\nDigite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
-                    scanf(" %c", &destino);
-                    printf("\n");
-                }
-                system("pause");
+            printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+            scanf(" %c", &destino);
+            printf("\n");
+
+            if (destino == 'E' || destino == 'D' || destino == 'e' || destino == 'd') break;
+
+            printf("Tente novamente.\n");            
         }
 
         if(escolha == 'E'){
-            if(PD != ME){
+            if(PE == ME){
                 inverte_posi(&peca);
+                insere_listad_na_esquerda(mesa, peca);
+            }else{
                 insere_listad_na_esquerda(mesa, peca);
             }
         }
 
+        if(escolha == 'D'){
+            if(PD == MD){
+                inverte_posi(&peca);
+                insere_listad_na_esquerda(mesa, peca);
+            }else{
+                insere_listad_na_esquerda(mesa, peca);
+            }
+        }
+
+    }
+
+    //2º CASO
+    if ((PE == ME || PE == MD) || (PD == ME || PD == MD)){
+        if(PE == ME){
+            inverte_posi(&peca);
+            insere_listad_na_esquerda(mesa, peca); 
+        }
+        if(PE == MD){
+            insere_listad_na_esquerda(mesa, peca);
+        }
+        if(PD == PE){
+            insere_listad_na_esquerda(mesa, peca);
+        }
+        if(PD == ME){
+            inverte_posi(&peca);
+            insere_listad_na_esquerda(mesa, peca); 
+        }
     }
     return 0;
 }
@@ -278,7 +304,6 @@ int main() {
     embaralhar(&monte);
 
     // Distribuindo as peças para cada jogador
-    // talvez o jogo ocorra todo dentro desses dois ifs.
 
     inicializa_pilha(&jogador1.mao);
     inicializa_pilha(&jogador2.mao);
@@ -296,85 +321,35 @@ int main() {
     ordenar_pecas(&jogador1.mao);
     ordenar_pecas(&jogador2.mao);
 
-    int contador_temp = 0;  //variável temporária
-    int posicao = 0;
-    char destino;
+    int rodada = 0;
 
     mesa = inicializa_listad();
-
-    //populando mesa para testar
-    tp_item peca_teste1;
-    peca_teste1.esquerda = 6;
-    peca_teste1.direita = 6;
-
-    tp_item peca_teste2;
-    peca_teste2.esquerda = 6;
-    peca_teste2.direita = 2;
-
-    tp_item peca_teste3;
-    peca_teste3.esquerda = 1;
-    peca_teste3.direita = 6;
-
-    insere_listad_na_direita(mesa, peca_teste1);
-    insere_listad_na_direita(mesa, peca_teste2);
-    insere_listad_na_esquerda(mesa, peca_teste3);
 
     while (checar_fim_do_jogo(&jogador1.mao, &jogador2.mao)) {
         system("cls");
 
-        // if (contador_temp > 0) imprime_listad(mesa, 1);
-
         imprime_listad(mesa, 1);
-        printf("\n");
+        printf("\n\n");
 
-        if (contador_temp % 2 == 0) {
+        if (rodada % 2 == 0) {
             printf("Vez do jogador %s\n", jogador1.nome);
             imprime_pilha(jogador1.mao);
             
             tp_item peca_valida = verificar(&jogador1.mao);
             
-            //esquerda ou direita?
-
+            destino(peca_valida);
         }
 
-        else if (contador_temp % 2 != 0) {
+        else if (rodada % 2 != 0) {
             printf("Vez do jogador %s\n", jogador2.nome);
             imprime_pilha(jogador2.mao);
-            jogador2.num_pecas = altura_pilha(&jogador2.mao);
 
-            //looping para obrigar o usuário a escolher uma posição existente
-        while (1) {
-            printf("Digite a posicao da peca: ");
-            scanf("%d", &posicao);
-            printf("\n");
+            tp_item peca_valida = verificar(&jogador2.mao);
+            
+            destino(peca_valida);
 
-            if (posicao > 0 && posicao <= jogador2.num_pecas) {
-                tp_item peca_retirada = verificar_peca(&jogador2.mao, posicao);
-                if (validar_peca(mesa, peca_retirada)) break;
-            }
-
-            printf("Tente novamente.\n");
         }
-
-        printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
-        scanf(" %c", &destino);
-        printf("\n");
-
-        while (1) {
-            if (destino == 'E' || destino == 'D')
-                break;
-            else {
-                printf("Tentdestinoente.\nDigite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
-                scanf(" %c", &destino);
-                printf("\n");
-            }
-        }
-
-        system("pause");
-        // imprime_tabuleiro();
+    rodada++;
     }
-    contador_temp++;
-}
-
 return 0;
 }

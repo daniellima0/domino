@@ -185,13 +185,20 @@ int validar_peca(tp_listad *mesa, tp_item peca) {
     return 0;
 }
 
-int validar_destino(tp_listad *mesa, tp_item peca) {
+void inverte_posi(tp_item *peca){
+    int temp = peca->esquerda;
+    peca->esquerda = peca->direita;
+    peca->direita = temp;
+}
+
+int destino(tp_listad *mesa, tp_item peca) {
     if (lista_vazia(mesa)) return 1;
 
     int ME = mesa->ini->info.esquerda;  // MESA ESQUERDA
     int MD = mesa->fim->info.direita;   // MESA DIREITA
     int PE = peca.esquerda;
     int PD = peca.direita;
+    char destino;
 
     //1º CASO
     if ((PE == ME || PE == MD) && (PD == ME || PD == MD)) {
@@ -200,22 +207,26 @@ int validar_destino(tp_listad *mesa, tp_item peca) {
         printf("\n");
 
         while (1) {
-            if (destino == 'E' || destino == 'D') {
-                if (validar_destino(mesa, peca, 'E')) {
-                    break;
-                } else {
+            if (destino == 'E' || destino == 'D') break;
+                else {
                     printf("Tente novamente.\nDigite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
                     scanf(" %c", &destino);
                     printf("\n");
                 }
-
                 system("pause");
-                // imprime_tabuleiro();
+        }
+
+        if(escolha == 'E'){
+            if(PD != ME){
+                inverte_posi(&peca);
+                insere_listad_na_esquerda(mesa, peca);
             }
         }
+
     }
     return 0;
 }
+
 int main() {
     // regras(); Função pendente
 
@@ -319,29 +330,19 @@ int main() {
         if (contador_temp % 2 == 0) {
             printf("Vez do jogador %s\n", jogador1.nome);
             imprime_pilha(jogador1.mao);
-            jogador1.num_pecas = altura_pilha(&jogador1.mao);
+            
+            tp_item peca_valida = verificar(&jogador1.mao);
+            
+            //esquerda ou direita?
+
+        }
+
+        else if (contador_temp % 2 != 0) {
+            printf("Vez do jogador %s\n", jogador2.nome);
+            imprime_pilha(jogador2.mao);
+            jogador2.num_pecas = altura_pilha(&jogador2.mao);
 
             //looping para obrigar o usuário a escolher uma posição existente
-            while (1) {
-                printf("Digite a posicao da peca: ");
-                scanf("%d", &posicao);
-                printf("\n");
-
-                if (posicao > 0 && posicao <= jogador1.num_pecas) {
-                    tp_item peca_retirada = verificar_peca(&jogador1.mao, posicao);
-                    if (validar_peca(mesa, peca_retirada)) break;
-                }
-
-                printf("Tente novamente.\n");
-            }
-        }
-    }
-    else if (contador_temp % 2 != 0) {
-        printf("Vez do jogador %s\n", jogador2.nome);
-        imprime_pilha(jogador2.mao);
-        jogador2.num_pecas = altura_pilha(&jogador2.mao);
-
-        //looping para obrigar o usuário a escolher uma posição existente
         while (1) {
             printf("Digite a posicao da peca: ");
             scanf("%d", &posicao);
@@ -372,8 +373,6 @@ int main() {
         system("pause");
         // imprime_tabuleiro();
     }
-    /* tp_item ilv;
-            pop(&jogador1.mao, &ilv);pop(&jogador1.mao, &ilv);pop(&jogador1.mao, &ilv); */
     contador_temp++;
 }
 

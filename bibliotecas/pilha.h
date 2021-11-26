@@ -37,27 +37,50 @@ int pop(tp_pilha *p, tp_item *e) {  // pop = DESEMPILHAR; retorna para a main o 
     return 1;
 }
 
-// verifica qual a peça da posição escolhida
-tp_item verificar_peca(tp_pilha *p, int posicao) {
+tp_item verificar(tp_jogador *jog) {
     tp_pilha paux;
     inicializa_pilha(&paux);
     tp_item peca_escolhida, e;
-    
-    while (posicao - 1) {  // TIRAR O Q TA EM CIMA
-        pop(p, &e);
-        push(&paux, e);
-        posicao--;
-    }
-    
-    pop(p, &peca_escolhida);
-    push(p, peca_escolhida);
+    int posicao;
+    int altura = altura_pilha(&jog->mao);
+    while(1){
+        
+        while (1) {
+            printf("Digite a posicao da peca: ");
+            scanf("%d", &posicao);
+            printf("\n");
 
-    while (!pilha_vazia(&paux)) {  // DEVOLVE O Q TAVA EM CIMA
-        pop(&paux, &e);
-        push(p, e);
-    }
-    
-    return peca_escolhida;  // RETORNA PEÇA ESCOLHIDA
+            if (posicao > 0 && posicao <= altura) {
+                break;
+            }
+
+            printf("Tente novamente.\n");
+        }
+        
+        while (posicao - 1) { 
+            pop(&jog->mao , &e);
+            push(&paux, e);
+            posicao--;
+        }
+        
+        pop(&jog->mao, &peca_escolhida);
+        if(validar_peca(mesa, peca_escolhida)){
+            while (!pilha_vazia(&paux)) { 
+            pop(&paux, &e);
+            push(&jog->mao, e);
+            }
+        return peca_escolhida;
+        }
+        else{
+            printf("Opcao invalida. Nao é permitido gato.\n");
+            push(&jog->mao, peca_escolhida);
+            while (!pilha_vazia(&paux)) {
+            pop(&paux, &e);
+            push(&jog->mao, e);
+            }
+        }
+    }  
+    return peca_escolhida;
 }
 
 tp_item retirar_peca(tp_pilha *p, int posicao) {

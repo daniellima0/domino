@@ -11,3 +11,7 @@ void escolher_modo(int *x) {
         }
     }
 }
+/*
+tp_item peca_retirada = verificar_peca(&jogador1.mao, posicao);
+                    if (validar_peca(mesa, peca_retirada)) break;
+                    */

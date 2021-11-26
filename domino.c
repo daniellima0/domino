@@ -53,7 +53,6 @@ void embaralhar(tp_pilha *monte) {
 
 // SHELL SORT
 void ordenar_pecas(tp_pilha *p) {
-    printf("\n\n\n%d\n\n", altura_pilha(p));
     tp_item aux[altura_pilha(p)];
     tp_item e;
     int n = 0, i, j, k;
@@ -76,7 +75,6 @@ void ordenar_pecas(tp_pilha *p) {
     for(i=0; i<n; i++){
         push(p, aux[i]);
     }
-    printf("\n\n\n%d\n\n", altura_pilha(p));
 }
 
 int is_string(char *string) {
@@ -92,10 +90,14 @@ int is_string(char *string) {
 
 int ver_se_tem_como_jogar(tp_pilha p);
 
-int checar_fim_do_jogo(tp_pilha *mao1, tp_pilha *mao2) {  
-    /*if(!ver_se_tem_como_jogar(*mao1) && lista_vazia(&monte) || !ver_se_tem_como_jogar(*mao2) && lista_vazia(&monte)){
+int checar_fim_do_jogo(tp_pilha *mao1, tp_pilha *mao2) {
+    /*
+    if((!ver_se_tem_como_jogar(*mao1) && lista_vazia(&monte)) && (!ver_se_tem_como_jogar(*mao2) && lista_vazia(&monte))){
         printf("Acabou, sem ganhadores.\nFechou o jogo");
-    }*/
+        return 0;
+    }
+    */
+
     int jog1 = 0, jog2 = 0; //Indicar quem ganhou
 
     if (pilha_vazia(mao1)) {
@@ -159,7 +161,7 @@ int destino(tp_item peca){
             printf("Tente novamente.\n");            
         }
 
-        if(escolha == 'E'){
+        if(destino == 'E' || destino == 'e'){
             if(PE == ME){
                 inverte_posi(&peca);
                 insere_listad_na_esquerda(mesa, peca);
@@ -170,7 +172,7 @@ int destino(tp_item peca){
             }
         }
 
-        if(escolha == 'D'){
+        if(destino == 'D' || destino == 'd'){
             if(PD == MD){
                 inverte_posi(&peca);
                 insere_listad_na_direita(mesa, peca);

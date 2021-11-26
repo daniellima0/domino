@@ -5,6 +5,7 @@
 typedef struct {
     char nome[101];
     tp_pilha mao;
+    int num_pecas;
 } tp_jogador;
 
 #endif

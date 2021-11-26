@@ -6,20 +6,6 @@
 #include <locale.h>
 #include "./bibliotecas/globais.h"
 
-void escolher_modo(int *x) {
-    printf("Dois [2] ou Quatro [4] Jogadores?\n(digite zero [0] para sair)\n-> ");
-    scanf("%d", x);
-    while (1) {
-        if (*x == 2 || *x == 4 || *x == 0)
-            break;
-        else {
-            system("cls");
-            printf("Tente novamente.\nDois [2] ou Quatro [4] Jogadores?\n(digite zero [0] para sair)\n->");
-            scanf("%d", x);
-        }
-    }
-}
-
 void embaralhar(tp_pilha *monte) {
     tp_pilha p1, p2, p3, p4, p5;
     tp_item e;
@@ -167,8 +153,8 @@ int is_string(char *string) {
     return 1;
 }
 
-int fim_de_jogo_2jogadores(tp_pilha *mao1, tp_pilha *mao2) {  //adicionar checagem para finalizar o jogo quando não houver mais peça para jogar
-    int jog1 = 0, jog2 = 0;                                   //Indicar quem ganhou
+int checar_fim_do_jogo(tp_pilha *mao1, tp_pilha *mao2) {  //adicionar checagem para finalizar o jogo quando não houver mais peça para jogar
+    int jog1 = 0, jog2 = 0;                               //Indicar quem ganhou
 
     if (pilha_vazia(mao1)) {
         jog1 = 1;
@@ -186,7 +172,7 @@ int fim_de_jogo_2jogadores(tp_pilha *mao1, tp_pilha *mao2) {  //adicionar checag
         return 1;
 }
 
-int verificar_extremidades(tp_listad *mesa, tp_item peca) {
+int validar_peca(tp_listad *mesa, tp_item peca) {
     if (lista_vazia(mesa)) return 1;
 
     tp_item ponta_esquerda = mesa->ini->info;
@@ -199,98 +185,67 @@ int verificar_extremidades(tp_listad *mesa, tp_item peca) {
     return 0;
 }
 
+int validar_destino(tp_listad *mesa, tp_item peca) {
+    if (lista_vazia(mesa)) return 1;
+
+    int ME = mesa->ini->info.esquerda;  // MESA ESQUERDA
+    int MD = mesa->fim->info.direita;   // MESA DIREITA
+    int PE = peca.esquerda;
+    int PD = peca.direita;
+
+    //1º CASO
+    if ((PE == ME || PE == MD) && (PD == ME || PD == MD)) {
+        printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+        scanf(" %c", &destino);
+        printf("\n");
+
+        while (1) {
+            if (destino == 'E' || destino == 'D') {
+                if (validar_destino(mesa, peca, 'E')) {
+                    break;
+                } else {
+                    printf("Tente novamente.\nDigite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+                    scanf(" %c", &destino);
+                    printf("\n");
+                }
+
+                system("pause");
+                // imprime_tabuleiro();
+            }
+        }
+    }
+    return 0;
+}
 int main() {
     // regras(); Função pendente
 
-    // Escolhendo o modo de jogo
-    escolher_modo(&escolha);
+    do {
+        printf("\nDigite o nome do primeiro jogador: ");
+        scanf(" %[^\n]s", jogador1.nome);
 
-    if (escolha == 2) {
-        do {
-            printf("Voce escolheu jogar com dois jogadores.\n");
-
+        while ((!is_string(jogador1.nome))) {
+            system("cls");
+            printf("Utilize apenas caracteres. Tente novamente. ");
             printf("\nDigite o nome do primeiro jogador: ");
             scanf(" %[^\n]s", jogador1.nome);
+        }
 
-            while ((!is_string(jogador1.nome))) {
-                system("cls");
-                printf("Utilize apenas caracteres. Tente novamente. ");
-                printf("\nDigite o nome do primeiro jogador: ");
-                scanf(" %[^\n]s", jogador1.nome);
-            }
+        printf("\nDigite o nome do segundo jogador: ");
+        scanf(" %[^\n]s", jogador2.nome);
 
+        while ((!is_string(jogador2.nome))) {
+            system("cls");
+            printf("Utilize apenas caracteres. Tente novamente. ");
             printf("\nDigite o nome do segundo jogador: ");
             scanf(" %[^\n]s", jogador2.nome);
+        }
 
-            while ((!is_string(jogador2.nome))) {
-                system("cls");
-                printf("Utilize apenas caracteres. Tente novamente. ");
-                printf("\nDigite o nome do segundo jogador: ");
-                scanf(" %[^\n]s", jogador2.nome);
-            }
+        if (!strcmp(jogador1.nome, jogador2.nome)) {
+            system("cls");
+            printf("Utilize nomes diferentes. Tente novamente.\n");
+        }
 
-            if (!strcmp(jogador1.nome, jogador2.nome)) {
-                system("cls");
-                printf("Utilize nomes diferentes. Tente novamente.\n");
-            }
-
-        } while (!strcmp(jogador1.nome, jogador2.nome));
-    }
-
-    else if (escolha == 4) {
-        do {
-            printf("Voce escolheu jogar com quatro jogadores.\n");
-            printf("\nDigite o nome do primeiro jogador: ");
-            scanf(" %[^\n]s", jogador1.nome);
-
-            while ((!is_string(jogador1.nome))) {
-                system("cls");
-                printf("Utilize apenas caracteres. Tente novamente. ");
-                printf("\nDigite o nome do primeiro jogador: ");
-                scanf(" %[^\n]s", jogador1.nome);
-            }
-
-            printf("Digite o nome do segundo jogador: ");
-            scanf(" %[^\n]s", jogador2.nome);
-
-            while ((!is_string(jogador2.nome))) {
-                system("cls");
-                printf("Utilize apenas caracteres. Tente novamente. ");
-                printf("\nDigite o nome do segundo jogador: ");
-                scanf(" %[^\n]s", jogador2.nome);
-            }
-
-            printf("Digite o nome do terceiro jogador: ");
-            scanf(" %[^\n]s", jogador3.nome);
-
-            while ((!is_string(jogador3.nome))) {
-                system("cls");
-                printf("Utilize apenas caracteres. Tente novamente. ");
-                printf("\nDigite o nome do terceiro jogador: ");
-                scanf(" %[^\n]s", jogador3.nome);
-            }
-
-            printf("Digite o nome do quarto jogador: ");
-            scanf(" %[^\n]s", jogador4.nome);
-
-            while ((!is_string(jogador4.nome))) {
-                system("cls");
-                printf("Utilize apenas caracteres. Tente novamente. ");
-                printf("\nDigite o nome do quarto jogador: ");
-                scanf(" %[^\n]s", jogador4.nome);
-            }
-
-            if (!strcmp(jogador1.nome, jogador2.nome) || !strcmp(jogador1.nome, jogador3.nome) || !strcmp(jogador1.nome, jogador4.nome) || !strcmp(jogador2.nome, jogador3.nome) || !strcmp(jogador2.nome, jogador4.nome) || !strcmp(jogador3.nome, jogador4.nome)) {
-                system("cls");
-                printf("Utilize nomes diferentes. Tente novamente.\n");
-            }
-
-        } while (!strcmp(jogador1.nome, jogador2.nome) || !strcmp(jogador1.nome, jogador3.nome) || !strcmp(jogador1.nome, jogador4.nome) || !strcmp(jogador2.nome, jogador3.nome) || !strcmp(jogador2.nome, jogador4.nome) || !strcmp(jogador3.nome, jogador4.nome));
-
-    } else if (escolha == 0) {
-        printf("Voce escolheu sair.\nTchau, ate a proxima!");
-        return 0;
-    }
+    } while (!strcmp(jogador1.nome, jogador2.nome));
 
     //Criando peças
     for (i = 0; i <= 6; i++) {
@@ -314,173 +269,113 @@ int main() {
     // Distribuindo as peças para cada jogador
     // talvez o jogo ocorra todo dentro desses dois ifs.
 
-    if (escolha == 2) {
-        inicializa_pilha(&jogador1.mao);
-        inicializa_pilha(&jogador2.mao);
+    inicializa_pilha(&jogador1.mao);
+    inicializa_pilha(&jogador2.mao);
 
-        for (i = 0; i < 7; i++) {
-            pop(&monte, &e);
-            push(&jogador1.mao, e);
-        }
+    for (i = 0; i < 7; i++) {
+        pop(&monte, &e);
+        push(&jogador1.mao, e);
+    }
 
-        for (i = 0; i < 7; i++) {
-            pop(&monte, &e);
-            push(&jogador2.mao, e);
-        }
+    for (i = 0; i < 7; i++) {
+        pop(&monte, &e);
+        push(&jogador2.mao, e);
+    }
 
-        ordenar_pecas(&jogador1.mao);
-        ordenar_pecas(&jogador2.mao);
+    ordenar_pecas(&jogador1.mao);
+    ordenar_pecas(&jogador2.mao);
 
-        int contador_temp = 0;  //variável temporária
-        int posicao = 0;
-        char destino;
+    int contador_temp = 0;  //variável temporária
+    int posicao = 0;
+    char destino;
 
-        mesa = inicializa_listad();
+    mesa = inicializa_listad();
 
-        //populando mesa para testar
-        tp_item peca_teste1;
-        peca_teste1.esquerda = 6;
-        peca_teste1.direita = 6;
+    //populando mesa para testar
+    tp_item peca_teste1;
+    peca_teste1.esquerda = 6;
+    peca_teste1.direita = 6;
 
-        tp_item peca_teste2;
-        peca_teste2.esquerda = 6;
-        peca_teste2.direita = 2;
+    tp_item peca_teste2;
+    peca_teste2.esquerda = 6;
+    peca_teste2.direita = 2;
 
-        tp_item peca_teste3;
-        peca_teste3.esquerda = 1;
-        peca_teste3.direita = 6;
+    tp_item peca_teste3;
+    peca_teste3.esquerda = 1;
+    peca_teste3.direita = 6;
 
-        insere_listad_na_direita(mesa, peca_teste1);
-        insere_listad_na_direita(mesa, peca_teste2);
-        insere_listad_na_esquerda(mesa, peca_teste3);
+    insere_listad_na_direita(mesa, peca_teste1);
+    insere_listad_na_direita(mesa, peca_teste2);
+    insere_listad_na_esquerda(mesa, peca_teste3);
 
-        while (fim_de_jogo_2jogadores(&jogador1.mao, &jogador2.mao)) {
-            system("cls");
+    while (checar_fim_do_jogo(&jogador1.mao, &jogador2.mao)) {
+        system("cls");
 
-            // if (contador_temp > 0) imprime_listad(mesa, 1);
+        // if (contador_temp > 0) imprime_listad(mesa, 1);
 
-            imprime_listad(mesa, 1);
-            printf("\n");
+        imprime_listad(mesa, 1);
+        printf("\n");
 
-            if (contador_temp % 2 == 0) {
-                printf("Vez do jogador %s\n", jogador1.nome);
-                imprime_pilha(jogador1.mao);
-                int num_pecas_jogador1 = altura_pilha(&jogador1.mao);
+        if (contador_temp % 2 == 0) {
+            printf("Vez do jogador %s\n", jogador1.nome);
+            imprime_pilha(jogador1.mao);
+            jogador1.num_pecas = altura_pilha(&jogador1.mao);
 
-                //looping para obrigar o usuário a escolher uma posição existente
-                while (1) {
-                    printf("Digite a posicao da peca: ");
-                    scanf("%d", &posicao);
-                    printf("\n");
-
-                    if (posicao > 0 && posicao <= num_pecas_jogador1) {
-                        break;
-                    }
-
-                    printf("Tente novamente.\n");
-                }
-
-                tp_item peca_retirada = peca_escolhida(&jogador1.mao, posicao);
-
-                //looping para obrigar o usuário a escolher uma peça válida para jogar na mesa
-                while (1) {
-                    if (verificar_extremidades(mesa, peca_retirada))
-                        break;
-                    else {
-                        printf("Tente novamente.\nDigite a posicao da peca: ");
-                        scanf("%d", &posicao);
-                        printf("\n");
-                    }
-                }
-
-                printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
-                scanf(" %c", &destino);
-                printf("\n");
-
-                while (1) {
-                    if (destino == 'E' || destino == 'D')
-                        break;
-                    else {
-                        printf("Tente novamente.\nDigite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
-                        scanf(" %c", &destino);
-                        printf("\n");
-                    }
-                }
-
-                system("pause");
-                // imprime_tabuleiro();
-            } else if (contador_temp % 2 != 0) {
-                printf("Vez do jogador %s\n", jogador2.nome);
-                imprime_pilha(jogador2.mao);
-                int num_pecas_jogador2 = altura_pilha(&jogador2.mao);
+            //looping para obrigar o usuário a escolher uma posição existente
+            while (1) {
                 printf("Digite a posicao da peca: ");
                 scanf("%d", &posicao);
                 printf("\n");
-                while (1) {
-                    if (posicao > 0 && posicao <= num_pecas_jogador2)  // NÃO PODE DIGITAR UM NUM MAIOR NEM MENOR Q O NUMERO DE PEÇAS DA MAO E NEM UM UMA PEÇA QUE NÃO ESTEJA EM NUNHUMA PONTA DO JOGO. BOA SORTE, VAI PRECISAR =)
-                        break;
-                    else {
-                        printf("Tente novamente.\nDigite a posicao da peca: ");
-                        scanf("%d", &posicao);
-                        printf("\n");
-                    }
+
+                if (posicao > 0 && posicao <= jogador1.num_pecas) {
+                    tp_item peca_retirada = verificar_peca(&jogador1.mao, posicao);
+                    if (validar_peca(mesa, peca_retirada)) break;
                 }
-                printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+
+                printf("Tente novamente.\n");
+            }
+        }
+    }
+    else if (contador_temp % 2 != 0) {
+        printf("Vez do jogador %s\n", jogador2.nome);
+        imprime_pilha(jogador2.mao);
+        jogador2.num_pecas = altura_pilha(&jogador2.mao);
+
+        //looping para obrigar o usuário a escolher uma posição existente
+        while (1) {
+            printf("Digite a posicao da peca: ");
+            scanf("%d", &posicao);
+            printf("\n");
+
+            if (posicao > 0 && posicao <= jogador2.num_pecas) {
+                tp_item peca_retirada = verificar_peca(&jogador2.mao, posicao);
+                if (validar_peca(mesa, peca_retirada)) break;
+            }
+
+            printf("Tente novamente.\n");
+        }
+
+        printf("Digite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
+        scanf(" %c", &destino);
+        printf("\n");
+
+        while (1) {
+            if (destino == 'E' || destino == 'D')
+                break;
+            else {
+                printf("Tentdestinoente.\nDigite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
                 scanf(" %c", &destino);
                 printf("\n");
-                while (1) {
-                    if (destino == 'E' || destino == 'D')
-                        break;
-                    else {
-                        printf("Tente novamente.\nDigite o destino da peca [ESQUERDA [E] OU DIREITA [D] DO TABULEIRO]: ");
-                        scanf(" %c", &destino);
-                        printf("\n");
-                    }
-                }
-                system("pause");
             }
-            /* tp_item ilv;
+        }
+
+        system("pause");
+        // imprime_tabuleiro();
+    }
+    /* tp_item ilv;
             pop(&jogador1.mao, &ilv);pop(&jogador1.mao, &ilv);pop(&jogador1.mao, &ilv); */
-            contador_temp++;
-        }
-    }
+    contador_temp++;
+}
 
-    else if (escolha == 4) {
-        inicializa_pilha(&jogador1.mao);
-        inicializa_pilha(&jogador2.mao);
-        inicializa_pilha(&jogador3.mao);
-        inicializa_pilha(&jogador4.mao);
-
-        for (i = 0; i < 7; i++) {
-            pop(&monte, &e);
-            push(&jogador1.mao, e);
-        }
-
-        for (i = 0; i < 7; i++) {
-            pop(&monte, &e);
-            push(&jogador2.mao, e);
-        }
-
-        for (i = 0; i < 7; i++) {
-            pop(&monte, &e);
-            push(&jogador3.mao, e);
-        }
-
-        for (i = 0; i < 7; i++) {
-            pop(&monte, &e);
-            push(&jogador4.mao, e);
-        }
-
-        ordenar_pecas(&jogador1.mao);
-        ordenar_pecas(&jogador2.mao);
-        ordenar_pecas(&jogador3.mao);
-        ordenar_pecas(&jogador4.mao);
-
-        imprime_pilha(jogador1.mao);
-        imprime_pilha(jogador2.mao);
-        imprime_pilha(jogador3.mao);
-        imprime_pilha(jogador4.mao);
-    }
-
-    return 0;
+return 0;
 }

@@ -91,12 +91,11 @@ int is_string(char *string) {
 int ver_se_tem_como_jogar(tp_pilha p);
 
 int checar_fim_do_jogo(tp_pilha *mao1, tp_pilha *mao2) {
-    /*
-    if((!ver_se_tem_como_jogar(*mao1) && lista_vazia(&monte)) && (!ver_se_tem_como_jogar(*mao2) && lista_vazia(&monte))){
+    
+    if((!ver_se_tem_como_jogar(*mao1) && lista_vazia(&monte)) || (!ver_se_tem_como_jogar(*mao2) && lista_vazia(&monte))){
         printf("Acabou, sem ganhadores.\nFechou o jogo");
         return 0;
     }
-    */
 
     int jog1 = 0, jog2 = 0; //Indicar quem ganhou
 
@@ -217,6 +216,9 @@ void cave (tp_jogador *jog){
 }
 
 int ver_se_tem_como_jogar(tp_pilha p){
+
+    if(lista_vazia(mesa)) return 0;
+
     int ME = mesa->ini->info.esquerda;
     int MD = mesa->fim->info.direita;
     
@@ -367,7 +369,8 @@ int main() {
     
     while (checar_fim_do_jogo(&jogador1.mao, &jogador2.mao)) {
         system("cls");
-
+        
+        printf("\n");
         imprime_listad(mesa, 1);
         printf("\n\n");
 
